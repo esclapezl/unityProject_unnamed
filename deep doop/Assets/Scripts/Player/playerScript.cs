@@ -8,7 +8,6 @@ public class playerScript : MonoBehaviour
     public hitboxScript leftHitbox;
     public hitboxScript upHitbox;
     public hitboxScript downHitbox;
-    
 
     // Start is called before the first frame update
     void Start()
@@ -20,9 +19,11 @@ public class playerScript : MonoBehaviour
     void Update()
     {
         //bouger le perso sur la grille
-        if (Input.GetButtonDown("up")){ 
-            if(!upHitbox.isColliding)    //peut se déplacer
-            {
+        if (Input.GetButtonDown("up"))
+        { 
+            if(!upHitbox.isColliding
+            || (upHitbox.objectTrigger != null && upHitbox.objectTrigger.tag == "crateInHole"))    
+            {   //peut se déplacer
                 transform.position = new Vector3(transform.position.x, transform.position.y+1, transform.position.z);
             }
             else    //la hitboxe est en collision
@@ -33,7 +34,8 @@ public class playerScript : MonoBehaviour
         }
         else if(Input.GetButtonDown("down"))
         {
-            if(!downHitbox.isColliding)    //peut se déplacer
+            if(!downHitbox.isColliding
+            || (downHitbox.objectTrigger != null && downHitbox.objectTrigger.tag == "crateInHole"))    //peut se déplacer
             {
                 transform.position = new Vector3(transform.position.x, transform.position.y-1, transform.position.z);
             }
@@ -44,7 +46,8 @@ public class playerScript : MonoBehaviour
         }
         else if(Input.GetButtonDown("left"))
         {
-            if(!leftHitbox.isColliding) 
+            if(!leftHitbox.isColliding
+            || (leftHitbox.objectTrigger != null && leftHitbox.objectTrigger.tag == "crateInHole")) 
             {
                 transform.position = new Vector3(transform.position.x-1, transform.position.y, transform.position.z);
             }
@@ -55,7 +58,8 @@ public class playerScript : MonoBehaviour
         }
         else if(Input.GetButtonDown("right"))
         {
-            if(!rightHitbox.isColliding) 
+            if(!rightHitbox.isColliding
+            || (rightHitbox.objectTrigger != null && rightHitbox.objectTrigger.tag == "crateInHole")) 
             {
                 transform.position = new Vector3(transform.position.x+1, transform.position.y, transform.position.z);
             }

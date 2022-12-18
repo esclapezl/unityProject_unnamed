@@ -6,17 +6,23 @@ public class hitboxScript : MonoBehaviour
 {
 
     public bool isColliding;
+    public GameObject objectTrigger;
     
     public BoxCollider2D bc;
 
     
-    void OnTriggerEnter2D (Collider2D hitInfo)
+    void OnTriggerStay2D (Collider2D hitInfo)
 	{
-        isColliding = true;
+        if(!(hitInfo.gameObject.tag == "Untagged"))
+        {
+            isColliding = true;
+            objectTrigger = hitInfo.gameObject;
+        }
     }
 
     void OnTriggerExit2D (Collider2D hitInfo)
 	{
         isColliding = false;
+        objectTrigger = null;
     }
 }
