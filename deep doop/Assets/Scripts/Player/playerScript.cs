@@ -9,10 +9,14 @@ public class playerScript : MonoBehaviour
     public hitboxScript upHitbox;
     public hitboxScript downHitbox;
 
+    public static ArrayList tagsPassableObstacle = new ArrayList();
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        //ajouter les objets que this peut passer
+        tagsPassableObstacle.Add("hole");
+        tagsPassableObstacle.Add("crateInHole");
     }
 
     // Update is called once per frame
