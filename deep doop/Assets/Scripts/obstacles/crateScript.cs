@@ -31,13 +31,7 @@ public class crateScript : MonoBehaviour
             || tagsPassableObstacle.Contains(downHitbox.objectTrigger.tag))
             && Input.GetButtonDown("down"))
             {
-                if(downHitbox.objectTrigger != null && downHitbox.objectTrigger.tag=="hole")
-                {
-                    this.gameObject.tag="crateInHole";
-                    this.GetComponent<BoxCollider2D> ().enabled = false;
-
-                }
-                transform.position = new Vector3(transform.position.x, transform.position.y-1, transform.position.z);
+                crateMovement(new Vector3(0,-1,0),downHitbox);
             }
             else if(downHitbox.isColliding 
             && downHitbox.objectTrigger.tag=="player" 
@@ -45,12 +39,7 @@ public class crateScript : MonoBehaviour
             || tagsPassableObstacle.Contains(upHitbox.objectTrigger.tag))
             && Input.GetButtonDown("up"))
             {
-                if(upHitbox.objectTrigger != null && upHitbox.objectTrigger.tag=="hole")
-                {
-                    this.gameObject.tag="crateInHole";
-                    this.GetComponent<BoxCollider2D> ().enabled = false;
-                }
-                transform.position = new Vector3(transform.position.x, transform.position.y+1, transform.position.z);
+                crateMovement(new Vector3(0,1,0),upHitbox);
             }
             else if(leftHitbox.isColliding 
             && leftHitbox.objectTrigger.tag=="player" 
@@ -58,13 +47,7 @@ public class crateScript : MonoBehaviour
             || tagsPassableObstacle.Contains(rightHitbox.objectTrigger.tag))
             && Input.GetButtonDown("right"))
             {
-                if(rightHitbox.objectTrigger != null && rightHitbox.objectTrigger.tag=="hole")
-                {
-                    rightHitbox.objectTrigger.tag="crateInHole";
-                    this.gameObject.tag="crateInHole";
-                    this.GetComponent<BoxCollider2D> ().enabled = false;
-                }
-                transform.position = new Vector3(transform.position.x+1, transform.position.y, transform.position.z);
+                crateMovement(new Vector3(1,0,0),rightHitbox);
             }
             else if(rightHitbox.isColliding 
             && rightHitbox.objectTrigger.tag=="player" 
@@ -72,14 +55,21 @@ public class crateScript : MonoBehaviour
             || tagsPassableObstacle.Contains(leftHitbox.objectTrigger.tag))
             && Input.GetButtonDown("left"))
             {
-                if(leftHitbox.objectTrigger != null && leftHitbox.objectTrigger.tag=="hole")
-                {
-                    this.gameObject.tag="crateInHole";
-                    this.GetComponent<BoxCollider2D> ().enabled = false;
-                }
-                transform.position = new Vector3(transform.position.x-1, transform.position.y, transform.position.z);
+                crateMovement(new Vector3(-1,0,0),leftHitbox);
             }
         }
        
+    }
+
+    private void crateMovement(Vector3 v, hitboxScript h)
+    {
+        if(h.objectTrigger != null && h.objectTrigger.tag=="hole")
+        {
+            h.objectTrigger.tag="crateInHole";
+            this.gameObject.tag="crateInHole";
+            this.GetComponent<BoxCollider2D> ().enabled = false;
+            transform.position += new Vector3(0,0,1);
+        }
+        transform.position += v;
     }
 }
