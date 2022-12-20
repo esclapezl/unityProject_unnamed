@@ -9,6 +9,8 @@ public class holeScript : MonoBehaviour
     void Start()
     {
         
+        gameManager.setDepth(this.gameObject);
+        transform.position += new Vector3(0,0,2); 
     }
 
     // Update is called once per frame

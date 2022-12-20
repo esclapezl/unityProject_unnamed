@@ -9,14 +9,17 @@ public class playerScript : MonoBehaviour
     public hitboxScript upHitbox;
     public hitboxScript downHitbox;
 
-    public static ArrayList tagsPassableObstacle = new ArrayList();
+    public ArrayList tagsPassableObstacle = new ArrayList();
+
+    public bool animationEnded = true;
 
     // Start is called before the first frame update
     void Start()
     {
         //ajouter les objets que this peut passer
-        tagsPassableObstacle.Add("hole");
-        tagsPassableObstacle.Add("crateInHole");
+        this.tagsPassableObstacle = gameManager.playerPassableObjects();
+        gameManager.setDepth(this.gameObject);
+        
     }
 
     // Update is called once per frame
@@ -25,11 +28,13 @@ public class playerScript : MonoBehaviour
         //bouger le perso sur la grille
         if (Input.GetButtonDown("up"))
         { 
-            if(!upHitbox.isColliding
-            || (upHitbox.objectTrigger != null && upHitbox.objectTrigger.tag == "crateInHole"))    
-            {   //peut se déplacer
-                transform.position = new Vector3(transform.position.x, transform.position.y+1, transform.position.z);
+            if(movementCondition(upHitbox))
+            {
+                StartCoroutine(move(new Vector3(0,1,0)));
             }
+            //peut se déplacer
+            
+            
             else    //la hitboxe est en collision
             {
                 //animation de blocage
@@ -38,10 +43,9 @@ public class playerScript : MonoBehaviour
         }
         else if(Input.GetButtonDown("down"))
         {
-            if(!downHitbox.isColliding
-            || (downHitbox.objectTrigger != null && downHitbox.objectTrigger.tag == "crateInHole"))    //peut se déplacer
+            if(movementCondition(downHitbox))    //peut se déplacer
             {
-                transform.position = new Vector3(transform.position.x, transform.position.y-1, transform.position.z);
+                StartCoroutine(move(new Vector3(0,-1,0)));
             }
             else
             {
@@ -50,10 +54,9 @@ public class playerScript : MonoBehaviour
         }
         else if(Input.GetButtonDown("left"))
         {
-            if(!leftHitbox.isColliding
-            || (leftHitbox.objectTrigger != null && leftHitbox.objectTrigger.tag == "crateInHole")) 
+            if(movementCondition(leftHitbox)) 
             {
-                transform.position = new Vector3(transform.position.x-1, transform.position.y, transform.position.z);
+                StartCoroutine(move(new Vector3(-1,0,0)));
             }
             else
             {
@@ -62,10 +65,9 @@ public class playerScript : MonoBehaviour
         }
         else if(Input.GetButtonDown("right"))
         {
-            if(!rightHitbox.isColliding
-            || (rightHitbox.objectTrigger != null && rightHitbox.objectTrigger.tag == "crateInHole")) 
+            if(movementCondition(rightHitbox)) 
             {
-                transform.position = new Vector3(transform.position.x+1, transform.position.y, transform.position.z);
+                StartCoroutine(move(new Vector3(1,0,0)));
             }
             else
             {
@@ -73,5 +75,22 @@ public class playerScript : MonoBehaviour
             }
            
         }
+    }
+
+    private bool movementCondition(hitboxScript h)
+    {
+        return ((!h.isColliding
+            || tagsPassableObstacle.Contains(h.objectTrigger.tag))
+            && animationEnded)  ;
+    }
+
+    IEnumerator move(Vector3 v)
+    {
+        animationEnded = false;
+        // jouer l'animation
+        transform.position += v;
+        gameManager.setDepth(this.gameObject);
+        yield return new WaitForSeconds(0.03f); // durée de l'animation
+        animationEnded = true;
     }
 }

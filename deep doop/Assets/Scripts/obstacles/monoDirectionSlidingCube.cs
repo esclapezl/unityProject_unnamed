@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class monoDirectionCrateScript : MonoBehaviour
+public class monoDirectionSlidingCube : MonoBehaviour
 {
     public hitboxScript rightHitbox;
     public hitboxScript leftHitbox;
@@ -14,6 +14,8 @@ public class monoDirectionCrateScript : MonoBehaviour
     public int directionValue;
 
     private ArrayList tagsPassableObstacle = new ArrayList();
+
+    public GameObject trail;
     
 
     // Start is called before the first frame update
@@ -67,22 +69,22 @@ public class monoDirectionCrateScript : MonoBehaviour
             if(Input.GetButtonDown("down")
             && movementCondition(downHitbox,upHitbox,"down"))
             {
-                crateMovement(new Vector3(0,-1,0),downHitbox);
+                StartCoroutine(MonoDirectionSlidingCubeSlide(new Vector3(0,-1,0),downHitbox));
             }
             else if(Input.GetButtonDown("up")
             && movementCondition(upHitbox,downHitbox,"up"))
             {
-                crateMovement(new Vector3(0,1,0),upHitbox);
+                StartCoroutine(MonoDirectionSlidingCubeSlide(new Vector3(0,1,0),upHitbox));
             }
             else if(Input.GetButtonDown("right")
             && movementCondition(rightHitbox,leftHitbox,"right"))
             {
-                crateMovement(new Vector3(1,0,0),rightHitbox);
+                StartCoroutine(MonoDirectionSlidingCubeSlide(new Vector3(1,0,0),rightHitbox));
             }
             else if(Input.GetButtonDown("left")
             && movementCondition(leftHitbox,rightHitbox,"left"))
             {
-                crateMovement(new Vector3(-1,0,0),leftHitbox);
+                StartCoroutine(MonoDirectionSlidingCubeSlide(new Vector3(-1,0,0),leftHitbox));
             }
         }
     }
@@ -97,22 +99,29 @@ public class monoDirectionCrateScript : MonoBehaviour
     }
 
 
-    private void crateMovement(Vector3 v, hitboxScript h)
+    IEnumerator MonoDirectionSlidingCubeSlide(Vector3 v, hitboxScript h)
     {
-        if(h.objectTrigger != null && h.objectTrigger.tag=="hole")
+        while((!h.isColliding || tagsPassableObstacle.Contains(h.objectTrigger.tag)) 
+        && !(this.gameObject.tag=="crateInHole"))
         {
-            this.GetComponent<SpriteRenderer>().color *= 0.7f;
-            Color tmp = this.GetComponent<SpriteRenderer>().color;
-            tmp.a = 1f;
-            this.GetComponent<SpriteRenderer>().color = tmp;
+            if(h.objectTrigger != null && h.objectTrigger.tag=="hole"){
+                h.objectTrigger.tag="crateInHole";
+                this.gameObject.tag="crateInHole";
+                this.GetComponent<BoxCollider2D> ().enabled = false;
+            }
 
-            transform.position += new Vector3(0,0,1);
-            h.objectTrigger.tag="crateInHole";
-            this.gameObject.tag="crateInHole";
-            this.GetComponent<BoxCollider2D> ().enabled = false;
-        }
-        transform.position += v;
-        gameManager.setDepth(this.gameObject);
+            Instantiate(trail, transform.position, Quaternion.identity);
+
+            transform.position = transform.position + v;  
+            
+            gameManager.setDepth(this.gameObject);
+            
+            if((this.gameObject.tag=="crateInHole"))
+            {
+                transform.position += new Vector3(0,0,1);
+            } 
+            yield return new WaitForSeconds(0.05f);  
+        }            
     }
 
     private void rotate(string sens)

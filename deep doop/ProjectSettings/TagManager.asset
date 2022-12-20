@@ -9,6 +9,7 @@ TagManager:
   - player
   - crate
   - crateInHole
+  - closedSwitch
   layers:
   - Default
   - TransparentFX
