@@ -11,12 +11,15 @@ public class playerScript : MonoBehaviour
 
     public ArrayList tagsPassableObstacle = new ArrayList();
 
-    public bool animationEnded = true;
+    public diceFaceRendererScript dfr; 
 
     // Start is called before the first frame update
     void Start()
     {
         //ajouter les objets que this peut passer
+        
+       
+
         this.tagsPassableObstacle = gameManager.playerPassableObjects();
         gameManager.setDepth(this.gameObject);
         
@@ -30,7 +33,7 @@ public class playerScript : MonoBehaviour
         { 
             if(movementCondition(upHitbox))
             {
-                StartCoroutine(move(new Vector3(0,1,0)));
+                StartCoroutine(move(new Vector3(0,1,0),"up"));
             }
             //peut se déplacer
             
@@ -45,7 +48,7 @@ public class playerScript : MonoBehaviour
         {
             if(movementCondition(downHitbox))    //peut se déplacer
             {
-                StartCoroutine(move(new Vector3(0,-1,0)));
+                StartCoroutine(move(new Vector3(0,-1,0),"down"));
             }
             else
             {
@@ -56,7 +59,7 @@ public class playerScript : MonoBehaviour
         {
             if(movementCondition(leftHitbox)) 
             {
-                StartCoroutine(move(new Vector3(-1,0,0)));
+                StartCoroutine(move(new Vector3(-1,0,0),"left"));
             }
             else
             {
@@ -67,7 +70,7 @@ public class playerScript : MonoBehaviour
         {
             if(movementCondition(rightHitbox)) 
             {
-                StartCoroutine(move(new Vector3(1,0,0)));
+                StartCoroutine(move(new Vector3(1,0,0),"right"));
             }
             else
             {
@@ -77,6 +80,8 @@ public class playerScript : MonoBehaviour
         }
     }
 
+    public bool animationEnded = true;
+
     private bool movementCondition(hitboxScript h)
     {
         return ((!h.isColliding
@@ -84,10 +89,11 @@ public class playerScript : MonoBehaviour
             && animationEnded)  ;
     }
 
-    IEnumerator move(Vector3 v)
+    IEnumerator move(Vector3 v, string direction)
     {
+
         animationEnded = false;
-        // jouer l'animation
+        dfr.setDiceFace(direction);
         transform.position += v;
         gameManager.setDepth(this.gameObject);
         yield return new WaitForSeconds(0.03f); // durée de l'animation
