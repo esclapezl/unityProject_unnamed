@@ -13,13 +13,13 @@ public class playerScript : MonoBehaviour
 
     public diceFaceRendererScript dfr; 
 
+    public Vector3 startingPos = new Vector3(0.5f,0.5f,0.5f);
+    
+
     // Start is called before the first frame update
     void Start()
     {
         //ajouter les objets que this peut passer
-        
-       
-
         this.tagsPassableObstacle = gameManager.playerPassableObjects();
         gameManager.setDepth(this.gameObject);
         
@@ -98,5 +98,32 @@ public class playerScript : MonoBehaviour
         gameManager.setDepth(this.gameObject);
         yield return new WaitForSeconds(0.03f); // durée de l'animation
         animationEnded = true;
+    }
+
+
+    //reset
+    void OnEnable()
+    {
+        eventManager.OnReset += reset;
+    }
+
+    void onDisable()
+    {
+        eventManager.OnReset -= reset;
+    }
+
+    private void reset()
+    {
+        dfr.faceActuelle = 1;
+        dfr.orientation = 0;
+        transform.position = startingPos + new Vector3(0.5f,0.5f,0.5f);
+    }
+
+    private void changeLevel()
+    {
+        List<Vector3> startingPositions = new List<Vector3>();
+        startingPositions.Add(new Vector3(0,0,0));
+        startingPos = startingPositions[gameManager.level];
+        transform.position = startingPos + new Vector3(0.5f,0.5f,0.5f);
     }
 }

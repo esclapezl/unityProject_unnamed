@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class gameManager : MonoBehaviour
 {
-   
-    public static bool globalSwitchValue = true;
+    public static int level = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,16 +14,8 @@ public class gameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButtonDown("switch"))
-        {
-            switchBlocks();
-        }  
          
-    }
-
-    void switchBlocks()
-    {
-        globalSwitchValue = !globalSwitchValue;
+         
     }
 
 
@@ -45,9 +36,9 @@ public class gameManager : MonoBehaviour
         return tagsPlayerPassableObstacle;
     }
 
-    public static void setDepth(GameObject g)
+    public static void setDepth(GameObject g) // A SUPP
     {
-        g.transform.position = new Vector3(g.transform.position.x,g.transform.position.y,Mathf.Floor(g.transform.position.y));
+        //g.transform.position = new Vector3(g.transform.position.x,g.transform.position.y,Mathf.Floor(g.transform.position.y));
     }
 
 

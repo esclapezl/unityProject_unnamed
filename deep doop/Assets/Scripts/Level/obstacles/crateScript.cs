@@ -15,6 +15,7 @@ public class crateScript : MonoBehaviour
     void Start()
     {
         //ajouter les objets que this peut passer
+        startingPos = transform.position;
         this.tagsPassableObstacle = gameManager.passableObjects();
         gameManager.setDepth(this.gameObject);
     }
@@ -80,7 +81,23 @@ public class crateScript : MonoBehaviour
         {
             transform.position += new Vector3(0,0,1);
         } 
-         
-        
+    }
+
+    void OnEnable()
+    {
+        eventManager.OnReset += reset;
+    }
+
+    void onDisable()
+    {
+        eventManager.OnReset -= reset;
+    }   
+
+
+    public Vector3 startingPos;
+    private void reset()
+    {
+        this.gameObject.tag="crate";
+        transform.position = startingPos; //+ new Vector3(0.5f,0.5f,0.5f);
     }
 }

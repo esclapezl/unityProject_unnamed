@@ -7,7 +7,7 @@ public class hitboxScript : MonoBehaviour
 
     public bool isColliding;
     public GameObject objectTrigger;
-    public string tag;
+    
     
     public BoxCollider2D bc;
 
@@ -19,7 +19,7 @@ public class hitboxScript : MonoBehaviour
         {
             isColliding = true;
             objectTrigger = hitInfo.gameObject;
-            tag = objectTrigger.tag;
+            
         }
     }
 
@@ -30,7 +30,7 @@ public class hitboxScript : MonoBehaviour
         {
             isColliding = false;
             objectTrigger = null;
-            tag = null;
+            
         }
         
     }
