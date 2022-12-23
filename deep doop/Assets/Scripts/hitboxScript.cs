@@ -9,7 +9,7 @@ public class hitboxScript : MonoBehaviour
     public GameObject objectTrigger;
     
     
-    public BoxCollider2D bc;
+    //public BoxCollider2D boxCollider;
 
     
     void OnTriggerStay2D (Collider2D hitInfo)

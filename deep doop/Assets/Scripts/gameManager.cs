@@ -41,5 +41,11 @@ public class gameManager : MonoBehaviour
         //g.transform.position = new Vector3(g.transform.position.x,g.transform.position.y,Mathf.Floor(g.transform.position.y));
     }
 
+    
+
+    
+
+
+
 
 }

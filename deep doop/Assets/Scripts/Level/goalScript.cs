@@ -5,9 +5,15 @@ using UnityEngine;
 public class goalScript : MonoBehaviour
 {
     public int level;
+
     public delegate void goalAction();
+    public static event goalAction OnGoalTouched;
+
     private bool activeAnimation = false;
-    //public static event goalAction OnGoalTouched;
+    
+    public hitboxScript hitbox;
+
+    bool touched = false;
 
 
     // Start is called before the first frame update
@@ -22,6 +28,16 @@ public class goalScript : MonoBehaviour
         if(gameManager.level == level && !activeAnimation)
         {
             StartCoroutine(animateGoal());
+        }
+
+        // ATTENTION LA VARIABLE TOUCHED NEST PAS ENCORE REINITIALISEE, LE GOAL NE PEUT ETRE TOUCHE QUUNE FOIS
+        if(hitbox.isColliding
+        && hitbox.objectTrigger != null 
+        && hitbox.objectTrigger.tag == "player"
+        && touched == false)
+        {
+            touched = true;
+            OnGoalTouched();
         }
     }
 

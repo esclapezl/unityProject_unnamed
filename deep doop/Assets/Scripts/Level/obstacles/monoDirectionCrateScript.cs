@@ -14,11 +14,16 @@ public class monoDirectionCrateScript : MonoBehaviour
     public int directionValue;
 
     private ArrayList tagsPassableObstacle = new ArrayList();
+
+    public bool reversed;
     
 
     // Start is called before the first frame update
     void Start()
     {
+        startingPos = transform.position;
+        startingRot = direction;
+
         setDirection();
         this.tagsPassableObstacle = gameManager.passableObjects();
     }
@@ -55,11 +60,6 @@ public class monoDirectionCrateScript : MonoBehaviour
     void Update()
     {
 
-        if(Input.GetButtonDown("rotate"))
-        {
-            rotate("cw");
-        }    
-    
         setDirection();
         if(!(this.gameObject.tag=="crateInHole"))
         {
@@ -115,7 +115,7 @@ public class monoDirectionCrateScript : MonoBehaviour
         gameManager.setDepth(this.gameObject);
     }
 
-    private void rotate(string sens)
+    private void rotate()
     {
         List<string> rotation = new List<string>();
         rotation.Add("down");
@@ -123,26 +123,40 @@ public class monoDirectionCrateScript : MonoBehaviour
         rotation.Add("up");
         rotation.Add("right");
         int currentDirection = rotation.IndexOf(direction);
-        if(sens == "cw") //clockWise
+        
+        if(!reversed) //clockWise
         {
-            currentDirection++;
-            if(currentDirection == 4)
-            {
-                currentDirection = 0;
-            }
+            currentDirection =(currentDirection+1)%4;
+            
         }
-        if(sens == "ccw") //counter clockWise
+        else //counter clockWise
         {
-            currentDirection--;
-            if(currentDirection == -1)
-            {
-                currentDirection = 3;
-            }
+            currentDirection =((currentDirection-1)+4)%4;
         }
         direction = rotation[currentDirection];
-        
-        
+    }
+
+    void OnEnable()
+    {
+        eventManager.OnReset += reset;
+        eventManager.OnRotate += rotate;
+    }
+
+    void onDisable()
+    {
+        eventManager.OnReset -= reset;
+        eventManager.OnRotate -= rotate;
+
+    }   
 
 
+    private Vector3 startingPos;
+    private string startingRot;
+    private void reset()
+    {
+        this.gameObject.tag="crate";
+        direction = startingRot;
+        setDirection();
+        transform.position = startingPos; //+ new Vector3(0.5f,0.5f,0.5f);
     }
 }
