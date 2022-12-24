@@ -7,10 +7,12 @@ using UnityEngine.SceneManagement;
 public class levelSelectionScript : MonoBehaviour
 {
     public Button[] lvlButtons;
+    int levelAt = 2;
     // Start is called before the first frame update
     void Start()
     {
-        int levelAt = PlayerPrefs.GetInt("levelAt",2);
+        
+        levelAt = PlayerPrefs.GetInt("levelAt",2);
         for(int i =0; i<lvlButtons.Length;i++)
         {
             if(i+2 > levelAt)
@@ -25,6 +27,19 @@ public class levelSelectionScript : MonoBehaviour
         SceneManager.LoadScene (sceneNumber+1);
     }
 
-    // Update is called once per frame
+    void Update()
+    {
+        if(PlayerPrefs.GetInt("levelAt")>levelAt)
+        {
+            levelAt = PlayerPrefs.GetInt("levelAt");
+            for(int i =0; i<lvlButtons.Length;i++)
+            {
+                if(i+2 > levelAt)
+                {
+                    lvlButtons[i].interactable = false;
+                }
+            }
+        }
+    }
     
 }

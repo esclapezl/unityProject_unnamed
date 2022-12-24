@@ -12,11 +12,13 @@ public class eventManager : MonoBehaviour
     public delegate void SwitchAction();
     public static event SwitchAction SwitchBlocks;
 
-    public delegate void ChangeLevelAction();
-    public static event ChangeLevelAction OnChangeLevel;
+    //public delegate void ChangeLevelAction();
+    //public static event ChangeLevelAction OnChangeLevel;
 
     public delegate void RotateBlocksAction();
     public static event RotateBlocksAction OnRotate;
+
+    public levelScript currentLevel;
 
     void Update()
     {
@@ -32,14 +34,25 @@ public class eventManager : MonoBehaviour
 
         if(Input.GetButtonDown("rotate"))
         {
-            rotateBlocks();
+            if(currentLevel.nbRotateLeft > 0)
+            {
+                rotateBlocks();
+            }
+            else
+            {
+                //animation d'impossibilité ?
+            }
+            
         } 
+
     }
 
     public void rotateBlocks()
     {
         if(OnRotate != null)
         {
+            currentLevel.nbRotateLeft--;
+            currentLevel.textNbRotation.text = currentLevel.nbRotateLeft.ToString();
             OnRotate();
         }
     }
@@ -59,14 +72,15 @@ public class eventManager : MonoBehaviour
 
     void OnEnable()
     {
-        goalScript.OnGoalTouched += changeLevel;
+        //goalScript.OnGoalTouched += changeLevel;
     }
 
     void onDisable()
     {
-        goalScript.OnGoalTouched -= changeLevel;
+        //goalScript.OnGoalTouched -= changeLevel;
     }
 
+    /*
     private void changeLevel()
     {
         
@@ -77,4 +91,5 @@ public class eventManager : MonoBehaviour
             OnChangeLevel();
         }
     }
+    */
 }
