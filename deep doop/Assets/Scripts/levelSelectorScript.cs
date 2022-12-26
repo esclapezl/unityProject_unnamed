@@ -34,8 +34,7 @@ public class levelSelectorScript : MonoBehaviour
         && hitbox.objectTrigger.tag == "player"
         && !locked)
         {
-            print("print");
-            selectionScript.ChangeToScene(level);
+            selectionScript.ChangeToLevel(level);
         }
     }
 }

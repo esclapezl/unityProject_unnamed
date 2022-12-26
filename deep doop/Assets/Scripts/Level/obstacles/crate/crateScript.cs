@@ -11,13 +11,19 @@ public class crateScript : MonoBehaviour
 
     private ArrayList tagsPassableObstacle = new ArrayList();
 
+    //facultatif 
+    public monoDirectionScript mono;
+    public slidingScript slideScript;
+
+
+    //facultatif
+
     // Start is called before the first frame update
     void Start()
     {
         //ajouter les objets que this peut passer
         startingPos = transform.position;
         this.tagsPassableObstacle = gameManager.passableObjects();
-        gameManager.setDepth(this.gameObject);
     }
 
     // Update is called once per frame
@@ -28,24 +34,58 @@ public class crateScript : MonoBehaviour
             
             //bouger la caisse sur la grille si perso derriere et qu'il pousse et que rien derriere
             if(Input.GetButtonDown("down")
-            && movementCondition(downHitbox,upHitbox))
+            && movementCondition(downHitbox,upHitbox)
+            && (mono == null || mono.movementCondition("down")) //si script mono setup, check les conditions du mono en plus
+            ) 
             {
-                crateMovement(new Vector3(0,-1,0),downHitbox);
+                if(slideScript != null)
+                {
+                    slideScript.slide(new Vector3(0,-1,0),downHitbox,tagsPassableObstacle);
+                }
+                else
+                {
+                    crateMovement(new Vector3(0,-1,0),downHitbox);
+                }
+                
             }
             else if(Input.GetButtonDown("up")
-            && movementCondition(upHitbox,downHitbox))
+            && movementCondition(upHitbox,downHitbox)
+            && (mono == null || mono.movementCondition("up")))
             {
-                crateMovement(new Vector3(0,1,0),upHitbox);
+                if(slideScript != null)
+                {
+                    slideScript.slide(new Vector3(0,1,0),upHitbox,tagsPassableObstacle);
+                }
+                else
+                {
+                    crateMovement(new Vector3(0,1,0),upHitbox);
+                }
             }
             else if(Input.GetButtonDown("right")
-            && movementCondition(rightHitbox,leftHitbox))
+            && movementCondition(rightHitbox,leftHitbox)
+            && (mono == null || mono.movementCondition("right")))
             {
-                crateMovement(new Vector3(1,0,0),rightHitbox);
+                if(slideScript != null)
+                {
+                    slideScript.slide(new Vector3(1,0,0),rightHitbox,tagsPassableObstacle);
+                }
+                else
+                {
+                    crateMovement(new Vector3(1,0,0),rightHitbox);
+                }
             }
             else if(Input.GetButtonDown("left")
-            && movementCondition(leftHitbox,rightHitbox))
+            && movementCondition(leftHitbox,rightHitbox)
+            && (mono == null || mono.movementCondition("left")))
             {
-                crateMovement(new Vector3(-1,0,0),leftHitbox);
+                if(slideScript != null)
+                {
+                    slideScript.slide(new Vector3(-1,0,0),leftHitbox,tagsPassableObstacle);
+                }
+                else
+                {
+                    crateMovement(new Vector3(-1,0,0),leftHitbox);
+                }
             }
         }
     }
@@ -92,7 +132,6 @@ public class crateScript : MonoBehaviour
     {
         eventManager.OnReset -= reset;
     }   
-
 
     public Vector3 startingPos;
     private void reset()

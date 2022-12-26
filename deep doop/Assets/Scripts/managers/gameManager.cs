@@ -28,13 +28,7 @@ public class gameManager : MonoBehaviour
         return tagsPassableObstacle;
     }
 
-    public static ArrayList playerPassableObjects() // les objets que le joueur peut traverser
-    {
-        ArrayList tagsPlayerPassableObstacle = new ArrayList();
-        tagsPlayerPassableObstacle.Add("crateInHole");
-        tagsPlayerPassableObstacle.Add("closedSwitch");
-        return tagsPlayerPassableObstacle;
-    }
+    
 
     public static void setDepth(GameObject g) // A SUPP
     {

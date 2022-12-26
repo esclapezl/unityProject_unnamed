@@ -1,28 +1,25 @@
 fileFormatVersion: 2
-guid: e4fef05738463784f88e9a185f051c69
+guid: c930c160047418046889af7fb0dbb4f2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6812724924957013529
-    second: levelGroundSpriteSheet_0
+      213: 1262335840581379490
+    second: iceGroundSpriteSheet_0
   - first:
-      213: -5413757570188701299
-    second: levelGroundSpriteSheet_1
+      213: 2276254481661391288
+    second: iceGroundSpriteSheet_1
   - first:
-      213: -7580211036663903114
-    second: levelGroundSpriteSheet_2
+      213: 7438779084309475292
+    second: iceGroundSpriteSheet_2
   - first:
-      213: -2309908893978164322
-    second: levelGroundSpriteSheet_3
+      213: 4056680813084588682
+    second: iceGroundSpriteSheet_3
   - first:
-      213: 9054005778700062503
-    second: levelGroundSpriteSheet_4
+      213: 7615700461561676980
+    second: iceGroundSpriteSheet_4
   - first:
-      213: 1411776716054654682
-    second: levelGroundSpriteSheet_5
-  - first:
-      213: 5072766235840279577
-    second: levelGroundSpriteSheet_6
+      213: 8016302856823799813
+    second: iceGroundSpriteSheet_5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -89,7 +86,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -101,7 +98,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -112,11 +109,11 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: levelGroundSpriteSheet_0
+      name: iceGroundSpriteSheet_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 32
+        y: 64
         width: 16
         height: 16
       alignment: 0
@@ -126,18 +123,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7e9cc7fa6c65471a0800000000000000
-      internalID: -6812724924957013529
+      spriteID: 2a5e81542c7b48110800000000000000
+      internalID: 1262335840581379490
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: levelGroundSpriteSheet_1
+      name: iceGroundSpriteSheet_1
       rect:
         serializedVersion: 2
         x: 16
-        y: 32
+        y: 64
         width: 16
         height: 16
       alignment: 0
@@ -147,18 +144,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d8112d85c287ed4b0800000000000000
-      internalID: -5413757570188701299
+      spriteID: 8b171d51461e69f10800000000000000
+      internalID: 2276254481661391288
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: levelGroundSpriteSheet_2
+      name: iceGroundSpriteSheet_2
       rect:
         serializedVersion: 2
         x: 32
-        y: 32
+        y: 64
         width: 16
         height: 16
       alignment: 0
@@ -168,81 +165,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 67c072d493eadc690800000000000000
-      internalID: -7580211036663903114
+      spriteID: cdf2fd23a2adb3760800000000000000
+      internalID: 7438779084309475292
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: levelGroundSpriteSheet_3
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 32
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e938aee691e81ffd0800000000000000
-      internalID: -2309908893978164322
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: levelGroundSpriteSheet_4
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 32
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 72f40c9194a46ad70800000000000000
-      internalID: 9054005778700062503
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: levelGroundSpriteSheet_5
-      rect:
-        serializedVersion: 2
-        x: 80
-        y: 32
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: adeea9e7173a79310800000000000000
-      internalID: 1411776716054654682
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: levelGroundSpriteSheet_6
+      name: iceGroundSpriteSheet_3
       rect:
         serializedVersion: 2
         x: 0
-        y: 16
+        y: 48
         width: 16
         height: 16
       alignment: 0
@@ -252,8 +186,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 914fadbc306166640800000000000000
-      internalID: 5072766235840279577
+      spriteID: a8abc0fc4b93c4830800000000000000
+      internalID: 4056680813084588682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: iceGroundSpriteSheet_4
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b48927583760b960800000000000000
+      internalID: 7615700461561676980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: iceGroundSpriteSheet_5
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5008ee0e9f0af3f60800000000000000
+      internalID: 8016302856823799813
       vertices: []
       indices: 
       edges: []

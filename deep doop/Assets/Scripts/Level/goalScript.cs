@@ -16,7 +16,6 @@ public class goalScript : MonoBehaviour
 
     bool touched = false;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +25,7 @@ public class goalScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(SceneManager.GetActiveScene().buildIndex-1 == level && !activeAnimation)
+        if(levelSelectionScript.currentLevelNum == level && !activeAnimation)
         {
             StartCoroutine(animateGoal());
         }
@@ -48,12 +47,13 @@ public class goalScript : MonoBehaviour
         }
     }
 
+    public levelSelectionScript levelSelection;
     IEnumerator animateGoal()
     {
         activeAnimation = true;
 
         int d = 0;
-        while(SceneManager.GetActiveScene().buildIndex-1 == level)
+        while(levelSelection.currentLevel.level == level)
         {
             d = (d+90)%360;
             transform.rotation = Quaternion.Euler(0f, 0f,d);
