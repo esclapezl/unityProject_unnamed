@@ -23,6 +23,7 @@ public class playerScript : MonoBehaviour
     [Space(5)]
     
     public levelSelectionScript levelSelection;
+    public eventManager eventManager;
     
 
     // Start is called before the first frame update
@@ -123,6 +124,7 @@ public class playerScript : MonoBehaviour
 
     IEnumerator move(Vector3 v, string direction)
     {
+        eventManager.playerMove();
 
         animationEnded = false;
         dfr.setDiceFace(direction);
@@ -133,6 +135,8 @@ public class playerScript : MonoBehaviour
 
     public IEnumerator slideCoroutine(Vector3 v, hitboxScript h, string direction)
     {
+        eventManager.playerMove();
+        
         animationEnded = false;
         dfr.setDiceFace(direction);
         transform.position += v;

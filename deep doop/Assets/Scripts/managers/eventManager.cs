@@ -16,6 +16,7 @@ public class eventManager : MonoBehaviour
 
     
     public levelSelectionScript levelSelection;
+    public uiScript ui;
 
     
 
@@ -45,7 +46,7 @@ public class eventManager : MonoBehaviour
     public void rotateBlocks()
     {
         levelSelection.currentLevel.nbRotateLeft--;
-        levelSelection.currentLevel.textNbRotation.text = levelSelection.currentLevel.nbRotateLeft.ToString();
+        ui.setRotate(true,levelSelection.currentLevel.nbRotateLeft);
         if(OnRotate != null)
         {
             OnRotate();
@@ -70,8 +71,6 @@ public class eventManager : MonoBehaviour
             OnReset();
         }
     }
-
-
 
     public exitTransitionScript exitScript;
     public void exitLevel()
@@ -102,6 +101,6 @@ public class eventManager : MonoBehaviour
     public void playerMove()
     {
         levelSelection.currentLevel.nbCoupsLeft--;
-        levelSelection.currentLevel.textNbCoups.text = levelSelection.currentLevel.nbCoupsLeft.ToString();
+        ui.setCoups(levelSelection.currentLevel.nbCoupsLeft);
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class goalScript : MonoBehaviour
 {
-    public int level;
+    public levelScript level;
 
     //public delegate void goalAction();
     //public static event goalAction OnGoalTouched;
@@ -16,6 +16,8 @@ public class goalScript : MonoBehaviour
 
     bool touched = false;
 
+    public levelSelectionScript levelSelection;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +27,7 @@ public class goalScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(levelSelectionScript.currentLevelNum == level && !activeAnimation)
+        if(levelSelectionScript.currentLevelNum == level.level && !activeAnimation)
         {
             StartCoroutine(animateGoal());
         }
@@ -38,22 +40,19 @@ public class goalScript : MonoBehaviour
         {
             touched = true;
             //this level +2 = prochain level dans l'ensemble des scenes
-            if(PlayerPrefs.GetInt("levelAt") < this.level+2)
+            if(PlayerPrefs.GetInt("levelAt") < level.level)
             {
-                PlayerPrefs.SetInt("levelAt",this.level +2);
+                PlayerPrefs.SetInt("levelAt",level.level);
             }
-            
-            SceneManager.LoadScene (this.level + 2);
+            levelSelection.ChangeToLevel(level.level+1);
         }
     }
 
-    public levelSelectionScript levelSelection;
     IEnumerator animateGoal()
     {
         activeAnimation = true;
-
         int d = 0;
-        while(levelSelection.currentLevel.level == level)
+        while(levelSelection.currentLevel.level == level.level)
         {
             d = (d+90)%360;
             transform.rotation = Quaternion.Euler(0f, 0f,d);
