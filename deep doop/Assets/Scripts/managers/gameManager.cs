@@ -5,6 +5,9 @@ using UnityEngine;
 public class gameManager : MonoBehaviour
 {
     public static int level = 0;
+
+    public static bool actionFinished = true;
+    public static string ongoingAction = "";
     // Start is called before the first frame update
     void Start()
     {
@@ -27,8 +30,6 @@ public class gameManager : MonoBehaviour
         tagsPassableObstacle.Add("closedSwitch");
         return tagsPassableObstacle;
     }
-
-    
 
     public static void setDepth(GameObject g) // A SUPP
     {

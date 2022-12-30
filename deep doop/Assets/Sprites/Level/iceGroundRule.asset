@@ -103,7 +103,7 @@ MonoBehaviour:
     m_RuleTransform: 0
   - m_Id: 5
     m_Sprites:
-    - {fileID: 8016302856823799813, guid: c930c160047418046889af7fb0dbb4f2, type: 3}
+    - {fileID: 5661396733527138446, guid: c930c160047418046889af7fb0dbb4f2, type: 3}
     m_GameObject: {fileID: 0}
     m_MinAnimationSpeed: 1
     m_MaxAnimationSpeed: 1

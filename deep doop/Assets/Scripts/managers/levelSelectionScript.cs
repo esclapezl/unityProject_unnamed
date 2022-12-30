@@ -9,34 +9,58 @@ public class levelSelectionScript : MonoBehaviour
     //public Button[] lvlButtons;
     
     public GameObject player;
-    int levelAt = 2;
+    int levelAt = 2; //player progression
     int startPos;
-    public GameObject[] miniLevels;
+    public Transform miniLevels;
+    [HideInInspector] public List<Transform> miniLevelList;
 
-    public levelScript[] levels;
+    public Transform levels;
+    [HideInInspector] public List<levelScript> levelList;
     public levelScript currentLevel;
     public static int currentLevelNum;
 
     private int lastLevelEntered = 0;
 
-    public bgEffect bgScript;
+    [HideInInspector] public bgEffect bgScript;
    
 
     Camera cam;
    
     // Start is called before the first frame update
+
+    void Awake()
+    {
+        //selectionne automatiquement tous les levels dans l'ordre dans lequel ils ont été mit dans l'éditeur je crois
+        levelList = new List<levelScript>();
+        foreach(Transform level in levels)
+        {
+            levelList.Add(level.GetComponent<levelScript>());
+        }
+
+        miniLevelList = new List<Transform>();
+        foreach(Transform levelObject in miniLevels)
+        {
+            miniLevelList.Add(levelObject);
+        }
+    }
+
     void Start()
     {
         cam = Camera.main;
-        currentLevel = levels[0];
-        Vector3 startPos = miniLevels[lastLevelEntered].transform.position;
-        player.transform.position = new Vector3(startPos.x,startPos.y,0);
-        levelAt = PlayerPrefs.GetInt("levelAt",2);
-
-        if(currentLevel != null)
+        if(currentLevel == null)
         {
-            ChangeToLevel(currentLevel.level);
+            currentLevel = levelList[0];
         }
+
+        if(currentLevel == levelList[0])
+        {
+            Vector3 startPos = miniLevelList[lastLevelEntered].transform.position;
+            player.transform.position = new Vector3(startPos.x,startPos.y,0);
+        }
+        
+        levelAt = PlayerPrefs.GetInt("levelAt",2);
+        ChangeToLevel(currentLevel.level);
+        
     }
 
     public void ChangeToLevel(int lvlNumber)
@@ -47,12 +71,14 @@ public class levelSelectionScript : MonoBehaviour
     private IEnumerator changeLevel(int lvlNumber)
     {
         lastLevelEntered = currentLevel.level;
-        currentLevel = levels[lvlNumber];
+        currentLevel = levelList[lvlNumber];
 
         yield return new WaitForSeconds(0.2f);
 
         cam.transform.position = new Vector3(currentLevel.cameraPos.transform.position.x,currentLevel.cameraPos.transform.position.y,-100);
         player.transform.position =  new Vector3(currentLevel.startingPos.transform.position.x,currentLevel.startingPos.transform.position.y,0);
+
+        //player.madeActions = Vector3[nbCoups-1];
 
         currentLevelNum = currentLevel.level;
         currentLevel.startLevel();

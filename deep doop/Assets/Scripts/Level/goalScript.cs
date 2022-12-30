@@ -14,14 +14,14 @@ public class goalScript : MonoBehaviour
     
     public hitboxScript hitbox;
 
-    bool touched = false;
+    public bool touched = false;
 
     public levelSelectionScript levelSelection;
 
     // Start is called before the first frame update
     void Start()
     {
-        touched = false;
+        
     }
 
     // Update is called once per frame
@@ -30,6 +30,10 @@ public class goalScript : MonoBehaviour
         if(levelSelectionScript.currentLevelNum == level.level && !activeAnimation)
         {
             StartCoroutine(animateGoal());
+        }
+        else if(levelSelectionScript.currentLevelNum == level.level && touched == true) 
+        {
+            touched = false;
         }
 
         
@@ -40,9 +44,9 @@ public class goalScript : MonoBehaviour
         {
             touched = true;
             //this level +2 = prochain level dans l'ensemble des scenes
-            if(PlayerPrefs.GetInt("levelAt") < level.level)
+            if(PlayerPrefs.GetInt("levelAt") < level.level+1)
             {
-                PlayerPrefs.SetInt("levelAt",level.level);
+                PlayerPrefs.SetInt("levelAt",level.level+1);
             }
             levelSelection.ChangeToLevel(level.level+1);
         }

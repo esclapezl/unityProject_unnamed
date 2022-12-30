@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class levelSelectorScript : MonoBehaviour
 {
     public bool locked;
-    public int level;
+    private int level;
     public Animator animator;
     public SpriteRenderer levelNum;
     public hitboxScript hitbox;
@@ -14,6 +14,14 @@ public class levelSelectorScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        int i = 1;
+        while("level_icon_"+i.ToString() != gameObject.name)
+        {
+            i++;
+        }
+        level = i;
+
+        
         locked = true;
         animator.SetBool("locked",locked);
         levelNum.enabled = false;

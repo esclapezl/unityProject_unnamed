@@ -46,6 +46,7 @@ public class uiScript : MonoBehaviour
 
     public GameObject actionIcon;
     public Text textNbCoups;
+
     public void setCoups(int nbCoups)
     {
         actionIcon.SetActive(nbCoups >= 0);
@@ -54,4 +55,14 @@ public class uiScript : MonoBehaviour
             textNbCoups.text = nbCoups.ToString();
         }
     }
+
+    public GameObject polarityIcon;
+    public void setPolarity(bool containsPolarity, bool isOn, int polarity)
+    {
+        polarityIcon.SetActive(containsPolarity);
+        polarityIcon.GetComponent<Animator>().SetBool("isOn", isOn);
+        polarityIcon.GetComponent<Animator>().SetInteger("polarity", polarity);
+    }
+    
+    
 }

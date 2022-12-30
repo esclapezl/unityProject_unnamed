@@ -18,6 +18,7 @@ public class slidingScript : MonoBehaviour
     {
         StartCoroutine(slideCoroutine(v,h,tagsPassables));
     }
+    
     public IEnumerator slideCoroutine(Vector3 v, hitboxScript h,ArrayList tagsPassables)
     {
         while((!h.isColliding || tagsPassables.Contains(h.objectTrigger.tag)) 

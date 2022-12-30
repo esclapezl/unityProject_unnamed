@@ -14,6 +14,8 @@ public class eventManager : MonoBehaviour
     public delegate void RotateBlocksAction();
     public static event RotateBlocksAction OnRotate;
 
+    public delegate void PolarityAction();
+    public static event PolarityAction OnPolarity;
     
     public levelSelectionScript levelSelection;
     public uiScript ui;
@@ -24,45 +26,77 @@ public class eventManager : MonoBehaviour
     {
         if(Input.GetButtonDown("switch"))
         {
-            if(SwitchBlocks != null)
+            if(levelSelection.currentLevel.nbCoupsLeft > 0
+            && SwitchBlocks != null)
             {
                 SwitchBlocks();
+                playerMove();
             }
+            else
+            {
+
+            }
+            
         } 
 
         if(Input.GetButtonDown("rotate"))
         {
-            if(levelSelection.currentLevel.nbRotateLeft > 0)
+            if(levelSelection.currentLevel.nbCoupsLeft > 0
+            && OnRotate != null)
             {
-                rotateBlocks();
+                OnRotate();
+                playerMove();
             }
             else
             {
                 //animation d'impossibilité ?
             }
         } 
+
+        if(Input.GetButtonDown("changePolarity"))
+        {
+            if(levelSelection.currentLevel.nbCoupsLeft > 0
+            && OnPolarity != null
+            && gameManager.actionFinished)
+            {
+                OnPolarity();
+                playerMove();
+            }
+        }
+        else
+        {
+
+        }
+
     }
 
+    /*
     public void rotateBlocks()
     {
         levelSelection.currentLevel.nbRotateLeft--;
-        ui.setRotate(true,levelSelection.currentLevel.nbRotateLeft);
+        //ui.setRotate(true,levelSelection.currentLevel.nbRotateLeft);
         if(OnRotate != null)
         {
             OnRotate();
         }
     }
+    */
 
     public delegate void ResetAction();
     public static event ResetAction OnReset;
     public void restartLevel()
     {
-        StartCoroutine(restartLevelCoroutine());
+        if(gameManager.actionFinished)
+        {
+            StartCoroutine(restartLevelCoroutine());
+        }
+        
     }
 
     public restartTransitionScript restartScript;
     public IEnumerator restartLevelCoroutine()
     {
+        gameManager.actionFinished = false;
          //animation en avance pour laisser le temps a l'anim de s'effectuer
         restartScript.reset();
         yield return new WaitForSeconds(0.7f); //temps ou l'anim recouvre l'ecran entier
@@ -70,18 +104,23 @@ public class eventManager : MonoBehaviour
         {
             OnReset();
         }
+        gameManager.actionFinished = true;
     }
 
     public exitTransitionScript exitScript;
     public void exitLevel()
     {
-        levelSelection.currentLevel = levelSelection.levels[0];
-        StartCoroutine(exitLevelCoroutine());
+        if(gameManager.actionFinished)
+        {
+            levelSelection.currentLevel = levelSelection.levelList[0];
+            StartCoroutine(exitLevelCoroutine());
+        }
     }
 
     public IEnumerator exitLevelCoroutine()
     {
-        if(levelSelection.levels[0] == levelSelection.currentLevel) //menu principal ou sors du jeu jsp encore
+        gameManager.actionFinished = false;
+        if(levelSelection.levelList[0] == levelSelection.currentLevel) //menu principal ou sors du jeu jsp encore
         {
             exitScript.exit();
             yield return new WaitForSeconds(0.65f); //temps ou l'anim recouvre l'ecran entier
@@ -92,9 +131,9 @@ public class eventManager : MonoBehaviour
             exitScript.exit();
             yield return new WaitForSeconds(0.65f); //temps ou l'anim recouvre l'ecran entier
             levelSelection.ChangeToLevel(0);
-            levelSelection.currentLevel = levelSelection.levels[0];
-            
+            levelSelection.currentLevel = levelSelection.levelList[0];
         }
+        gameManager.actionFinished = true;
         
     }
 

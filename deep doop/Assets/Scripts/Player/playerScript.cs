@@ -25,6 +25,7 @@ public class playerScript : MonoBehaviour
     public levelSelectionScript levelSelection;
     public eventManager eventManager;
     
+    //public Vector3[] madeActions;
 
     // Start is called before the first frame update
     void Start()
@@ -169,6 +170,10 @@ public class playerScript : MonoBehaviour
         dfr.orientation = 0;
         transform.position = new Vector3(levelSelection.currentLevel.startingPos.transform.position.x,levelSelection.currentLevel.startingPos.transform.position.y,0);
     }
+
+
+
+    
 
 }
 

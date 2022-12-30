@@ -5,11 +5,8 @@ using UnityEngine;
 
 public class levelScript : MonoBehaviour
 {
-    [Header("n°")]
+    [HideInInspector]
     public int level;
-
-    [Space(10)]
-    [Header("Level info")]
 
     [Space(5)]
     [Header("NbCoups (-1 si le joeur a coups illimité)")]
@@ -19,14 +16,20 @@ public class levelScript : MonoBehaviour
     [Space(5)]
     [Header("rotate")]
     public bool containsRotates;
-    public int nbRotate;
-    public int nbRotateLeft;
+    //public int nbRotate;
+    //public int nbRotateLeft;
 
     [Space(5)]
     [Header("switch")]
     public bool containsSwitchs;
-    public int nbSwitch;
-    public int nbSwitchLeft;
+    //public int nbSwitch;
+    //public int nbSwitchLeft;
+
+    [Space(5)]
+    [Header("polarity")]
+    public bool containsPolarity;
+    //public int nbSwitch;
+    //public int nbSwitchLeft;
 
     [Space(5)]
     [Header("start")]
@@ -38,11 +41,19 @@ public class levelScript : MonoBehaviour
     public levelSelectionScript levelSelection;
     public uiScript ui;
 
+
+    
     
     
     // Start is called before the first frame update
     void Start()
     {
+        level = 0;
+        while(gameObject.name != "Level_"+level.ToString()
+        && gameObject.name != "Level_selection")
+        {
+            level++;
+        }
         startLevel();
     }
 
@@ -53,22 +64,43 @@ public class levelScript : MonoBehaviour
         && levelSelection.currentLevel.level == level)
         {
             PlayerPrefs.SetInt("menuStartPos",level);
+
+            /*
             nbRotateLeft = nbRotate;
             ui.setRotate(containsRotates,nbRotate);
             nbSwitchLeft = nbSwitch;
             ui.setSwitch(containsSwitchs,nbSwitch);
+            */
             nbCoupsLeft = nbCoups;
             ui.setCoups(nbCoups);
+            ui.setPolarity(containsPolarity,isOn,polarity);
         }
+    }
+
+    int polarity = 1;
+    bool isOn = false;
+    void changePolarity()
+    {
+        if(!isOn){
+            isOn = true;
+        }
+        else{
+            polarity *= -1;
+        }
+
+        ui.setPolarity(true,isOn,polarity);
     }
 
     void OnEnable()
     {
         eventManager.OnReset += startLevel;
+        eventManager.OnPolarity += changePolarity;
     }
 
     void onDisable()
     {
         eventManager.OnReset -= startLevel;
+        eventManager.OnPolarity -= changePolarity;
     }   
+
 }
