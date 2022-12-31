@@ -23,6 +23,12 @@ TextureImporter:
   - first:
       213: 5072766235840279577
     second: levelGroundSpriteSheet_6
+  - first:
+      213: -865972314415580741
+    second: levelGroundSpriteSheet_7
+  - first:
+      213: 6398054757468075723
+    second: levelGroundSpriteSheet_8
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -254,6 +260,48 @@ TextureImporter:
       bones: []
       spriteID: 914fadbc306166640800000000000000
       internalID: 5072766235840279577
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: levelGroundSpriteSheet_7
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb9bfe5a4c27bf3f0800000000000000
+      internalID: -865972314415580741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: levelGroundSpriteSheet_8
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bc6f16057e47ac850800000000000000
+      internalID: 6398054757468075723
       vertices: []
       indices: 
       edges: []

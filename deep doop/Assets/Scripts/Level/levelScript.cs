@@ -60,6 +60,20 @@ public class levelScript : MonoBehaviour
     // Update is called once per frame
     public void startLevel()
     {
+        //active les fleches de tuto si lvl 1
+        if(levelSelection.currentLevel != null
+        && levelSelection.currentLevel.level == 1)
+        {
+            foreach(Transform child in levelSelection.player.transform)
+            {
+                if(child.name == "tutorialArrows")
+                {
+                    child.GetComponent<tutorialArrowsScript>().hasMoved = false;
+                    child.GetComponent<tutorialArrowsScript>().startTutorial();
+                }
+            }
+        }
+        
         if(levelSelection.currentLevel != null
         && levelSelection.currentLevel.level == level)
         {
@@ -74,21 +88,37 @@ public class levelScript : MonoBehaviour
             nbCoupsLeft = nbCoups;
             ui.setCoups(nbCoups);
             ui.setPolarity(containsPolarity,isOn,polarity);
+
+            polarity = 1;
+            isOn = false;
+            ui.setPolarity(containsPolarity,false,1);
         }
     }
 
-    int polarity = 1;
+    [HideInInspector] public int polarity = 1;
     bool isOn = false;
     void changePolarity()
     {
-        if(!isOn){
-            isOn = true;
-        }
-        else{
-            polarity *= -1;
-        }
+        if(levelSelection.currentLevel == this
+        && containsPolarity)
+        {
+            if(!isOn){
+                isOn = true;
+            }
+            else{
+                polarity *= -1;
+            }
 
-        ui.setPolarity(true,isOn,polarity);
+            ui.setPolarity(containsPolarity,isOn,polarity);
+            foreach(Transform child in Camera.main.transform)
+            {
+                if(child.name == "particles")
+                {
+                    child.GetComponent<particleScript>().changePolarity(polarity);
+                }
+            }
+        }
+        
     }
 
     void OnEnable()

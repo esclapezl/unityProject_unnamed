@@ -28,8 +28,11 @@ public class polarityWholeBlockScript : MonoBehaviour
 
     public static int usedByNBlocks = 0;
 
+    Vector3 startingPos;
+
     void Start()
     {
+        startingPos = transform.position;
         pushableObjectsInCollisison = new List<bool>(); 
 
         upHitboxes = new List<polarityHitboxScript>();
@@ -139,38 +142,45 @@ public class polarityWholeBlockScript : MonoBehaviour
     
     void changePolarity()
     {
-        //pour que tous les blocks aient bien le temps de finir leur mvmt
-        gameManager.actionFinished = false;
-        usedByNBlocks++;
+        if(transform.parent.GetComponent<levelScript>() != null
+        && transform.parent.GetComponent<levelScript>().level == transform.parent.GetComponent<levelScript>().levelSelection.currentLevel.level)
+        {
+
+        
+        
+            //pour que tous les blocks aient bien le temps de finir leur mvmt
+            gameManager.actionFinished = false;
+            usedByNBlocks++;
 
 
-        pushableObjectsInCollisison.Clear(); //si un objet bloquait la structure, il n'est plus pertinent vu que la direction a changé
-        if(!isOn){
-            isOn = true; 
-            foreach (Transform Child in transform) 
-            {
-                Child.GetComponent<polarityBlock>().isOn = true;
-                Child.GetComponent<polarityBlock>().animator.SetBool("isOn",true);
-                Child.GetComponent<polarityBlock>().animator.SetInteger("polarity",polarity);
+            pushableObjectsInCollisison.Clear(); //si un objet bloquait la structure, il n'est plus pertinent vu que la direction a changé
+            if(!isOn){
+                isOn = true; 
+                foreach (Transform Child in transform) 
+                {
+                    Child.GetComponent<polarityBlock>().isOn = true;
+                    Child.GetComponent<polarityBlock>().animator.SetBool("isOn",true);
+                    Child.GetComponent<polarityBlock>().animator.SetInteger("polarity",polarity);
+                }
             }
-        }
-        else{
-            polarity *= -1;
-            foreach (Transform Child in transform) 
-            {
-                Child.GetComponent<polarityBlock>().polarity = polarity;
-                Child.GetComponent<polarityBlock>().animator.SetInteger("polarity",polarity);
+            else{
+                polarity *= -1;
+                foreach (Transform Child in transform) 
+                {
+                    Child.GetComponent<polarityBlock>().polarity = polarity;
+                    Child.GetComponent<polarityBlock>().animator.SetInteger("polarity",polarity);
+                }
             }
-        }
 
-        if(axis == "x"){
-            v = new Vector3(polarity,0,0);
-        }
-        else if(axis =="y"){
-            v = new Vector3(0,polarity,0);
-        }
+            if(axis == "x"){
+                v = new Vector3(polarity,0,0);
+            }
+            else if(axis =="y"){
+                v = new Vector3(0,polarity,0);
+            }
 
-        StartCoroutine(slideCoroutine(v));
+            StartCoroutine(slideCoroutine(v));
+        }
         
     }
 
@@ -196,10 +206,26 @@ public class polarityWholeBlockScript : MonoBehaviour
     void OnEnable()
     {
         eventManager.OnPolarity += changePolarity;
+        eventManager.OnReset += reset;
     }
 
     void onDisable()
     {
         eventManager.OnPolarity -= changePolarity;
+        eventManager.OnReset -= reset;
     }   
+
+    private void reset()
+    {
+        transform.position = startingPos;
+        isOn = false;
+        polarity = 1;
+
+        foreach (Transform Child in transform) 
+        {
+            Child.GetComponent<polarityBlock>().isOn = false;
+            Child.GetComponent<polarityBlock>().animator.SetBool("isOn",isOn);
+            Child.GetComponent<polarityBlock>().animator.SetInteger("polarity",polarity);
+        }
+    }
 }

@@ -19,9 +19,10 @@ public class goalScript : MonoBehaviour
     public levelSelectionScript levelSelection;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        level = transform.parent.gameObject.GetComponent<levelScript>();
+        levelSelection = level.levelSelection;
     }
 
     // Update is called once per frame

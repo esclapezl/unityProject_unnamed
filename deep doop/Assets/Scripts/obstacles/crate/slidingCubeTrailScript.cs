@@ -20,7 +20,7 @@ public class slidingCubeTrailScript : MonoBehaviour
     {
         for(int i =0; i<10; i++)
         {
-            this.GetComponent<SpriteRenderer>().color *= 0.9f;
+            this.GetComponent<SpriteRenderer>().color -= new Color (0f,0f,0f,0.1f);
             yield return new WaitForSeconds(0.05f);
         }          
         this.GetComponent<SpriteRenderer>().color *= 0;

@@ -24,6 +24,8 @@ public class playerScript : MonoBehaviour
     
     public levelSelectionScript levelSelection;
     public eventManager eventManager;
+
+    public GameObject trail;
     
     //public Vector3[] madeActions;
 
@@ -34,6 +36,7 @@ public class playerScript : MonoBehaviour
         tagsPassableObstacle.Add("crateInHole");
         tagsPassableObstacle.Add("closedSwitch");
         tagsPassableObstacle.Add("ice");
+        tagsPassableObstacle.Add("goal");
         gameManager.setDepth(this.gameObject);
         
     }
@@ -44,13 +47,9 @@ public class playerScript : MonoBehaviour
         //bouger le perso sur la grille
         if (Input.GetButtonDown("up"))
         { 
-            if(slideCondition(upHitbox))
+            if(movementCondition(upHitbox))
             {
-                StartCoroutine(slideCoroutine(new Vector3(0,1,0),upHitbox,"up"));
-            }
-            else if(movementCondition(upHitbox))
-            {
-                StartCoroutine(move(new Vector3(0,1,0),"up"));
+                StartCoroutine(move(new Vector3(0,1,0),upHitbox,"up"));
             }
             else
             {
@@ -60,13 +59,9 @@ public class playerScript : MonoBehaviour
         }
         else if(Input.GetButtonDown("down"))
         {
-            if(slideCondition(downHitbox))
+            if(movementCondition(downHitbox))
             {
-                StartCoroutine(slideCoroutine(new Vector3(0,-1,0),downHitbox,"down"));
-            }
-            else if(movementCondition(downHitbox))
-            {
-                StartCoroutine(move(new Vector3(0,-1,0),"down"));
+                StartCoroutine(move(new Vector3(0,-1,0),downHitbox,"down"));
             }
             else
             {
@@ -75,13 +70,9 @@ public class playerScript : MonoBehaviour
         }
         else if(Input.GetButtonDown("left"))
         {
-            if(slideCondition(leftHitbox))
+            if(movementCondition(leftHitbox))
             {
-                StartCoroutine(slideCoroutine(new Vector3(-1,0,0),leftHitbox,"left"));
-            }
-            else if(movementCondition(leftHitbox))
-            {
-                StartCoroutine(move(new Vector3(-1,0,0),"left"));
+                StartCoroutine(move(new Vector3(-1,0,0),leftHitbox,"left"));
             }
             else
             {
@@ -90,13 +81,9 @@ public class playerScript : MonoBehaviour
         }
         else if(Input.GetButtonDown("right"))
         {
-            if(slideCondition(rightHitbox))
+            if(movementCondition(rightHitbox))
             {
-                StartCoroutine(slideCoroutine(new Vector3(1,0,0),rightHitbox,"right"));
-            }
-            else if(movementCondition(rightHitbox))
-            {
-                StartCoroutine(move(new Vector3(1,0,0),"right"));
+                StartCoroutine(move(new Vector3(1,0,0),rightHitbox,"right"));
             }
             else
             {
@@ -112,7 +99,7 @@ public class playerScript : MonoBehaviour
         return ((!h.isColliding
             || tagsPassableObstacle.Contains(h.objectTrigger.tag))
             && animationEnded
-            && levelSelection.currentLevel.nbCoupsLeft != 0)  ;
+            && levelSelection.currentLevel.nbCoupsLeft != 0);
     }
 
     private bool slideCondition(hitboxScript h)
@@ -123,8 +110,37 @@ public class playerScript : MonoBehaviour
         && levelSelection.currentLevel.nbCoupsLeft != 0);
     }
 
-    IEnumerator move(Vector3 v, string direction)
+    IEnumerator move(Vector3 v, hitboxScript h, string direction)
     {
+        //desactive les fleches tuto
+        if(levelSelection.currentLevel.level == 1)
+        {
+            foreach(Transform child in transform)
+            {
+                if(child.name == "tutorialArrows")
+                {
+                    child.GetComponent<SpriteRenderer>().color = new Color (1, 1, 1, 0); 
+                    child.GetComponent<tutorialArrowsScript>().hasMoved = true;
+                }
+            }
+        }
+        
+        eventManager.playerMove();
+        
+        animationEnded = false;
+        dfr.setDiceFace(direction);
+        //transform.position += v;
+        //yield return new WaitForSeconds(0.05f); 
+        while((!h.isColliding || tagsPassableObstacle.Contains(h.objectTrigger.tag))
+        && !(centerHitbox.isColliding && centerHitbox.objectTrigger.tag == "goal"))
+        {
+            Instantiate(trail, transform.position, Quaternion.identity);
+            transform.position = transform.position + v;  
+            yield return new WaitForSeconds(0.025f);   
+        }
+        animationEnded = true;  
+
+        /* ANCIEN MOUVEMENT 1 MVMT = 1 UNITE
         eventManager.playerMove();
 
         animationEnded = false;
@@ -132,7 +148,9 @@ public class playerScript : MonoBehaviour
         transform.position += v;
         yield return new WaitForSeconds(0.03f); // durée de l'animation
         animationEnded = true;
+        */
     }
+
 
     public IEnumerator slideCoroutine(Vector3 v, hitboxScript h, string direction)
     {
