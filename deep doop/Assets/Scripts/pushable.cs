@@ -33,6 +33,29 @@ public class pushable : MonoBehaviour
         return h;
     }
 
+    hitboxScript oppositeConcernedHitbox(Vector3 v)
+    {
+        hitboxScript h;
+        if(v == Vector3.up)
+        {
+            h = downHitbox;
+        }
+        else if(v == Vector3.down)
+        {
+            h = upHitbox;
+        }
+        else if(v == Vector3.right)
+        {
+            h = leftHitbox;
+        }
+        else //left
+        {
+            h = rightHitbox;
+        }
+
+        return h;
+    }
+
     void Start()
     {
         foreach(Transform Child in transform)
@@ -41,19 +64,24 @@ public class pushable : MonoBehaviour
             {
                 foreach(Transform ChildChild in Child)
                 {
-                    if(ChildChild.name == "leftHitbox")
+                    
+                    if(ChildChild.name == "leftHitbox"
+                    || ChildChild.name == "lh1")
                     {
                         leftHitbox = ChildChild.GetComponent<hitboxScript>();
                     }
-                    else if(ChildChild.name == "rightHitbox")
+                    else if(ChildChild.name == "rightHitbox"
+                    || ChildChild.name == "rh1")
                     {
                         rightHitbox = ChildChild.GetComponent<hitboxScript>();
                     }
-                    else if(ChildChild.name == "upHitbox")
+                    else if(ChildChild.name == "upHitbox"
+                    || ChildChild.name == "uh1")
                     {
                         upHitbox = ChildChild.GetComponent<hitboxScript>();
                     }
-                    else if(ChildChild.name == "downHitbox")
+                    else if(ChildChild.name == "downHitbox"
+                    || ChildChild.name == "dh1")
                     {
                         downHitbox = ChildChild.GetComponent<hitboxScript>();
                     }
@@ -73,19 +101,31 @@ public class pushable : MonoBehaviour
         obj collisione avec un objet poussable
 
         */
-        if(!h.isColliding 
+        return(!h.isColliding 
         || (h.objectTrigger != null && gameManager.passableObjects().Contains(h.objectTrigger.tag))
         || (h.objectTrigger != null && h.objectTrigger.GetComponent<pushable>() != null && !h.objectTrigger.GetComponent<pushable>().canBePushed(v))
-        )
-        {
-            return true;
-        }
-        else
+        || (h.objectTrigger != null && oppositeConcernedHitbox(v).objectTrigger != null && h.objectTrigger.name == oppositeConcernedHitbox(v).objectTrigger.name && isPolarityBlock(h.objectTrigger.name) ) //cas particulier ou l'obj est coincé dans un meme block polarisé
+        );
+        
+
+
+    }
+
+    bool isPolarityBlock(string objectName)
+    {
+        if(objectName == "walls")
         {
             return false;
         }
 
-
+        for(int i = 0;i<20;i++)
+        {
+            if(objectName == "polarityBlock_"+i.ToString())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void push(Vector3 v)
@@ -99,6 +139,34 @@ public class pushable : MonoBehaviour
 
         //est poussé
         transform.position += v;
+    }
+
+    public GameObject trail;
+    public IEnumerator kick(Vector3 v)
+    {
+        yield return new WaitForSeconds(0.05f); //le temps que le block qui la tapé s'arrete
+        while(canBePushed(v))
+        {
+            /*
+            if(h.objectTrigger != null && h.objectTrigger.tag=="hole"){
+                h.objectTrigger.tag="crateInHole";
+                this.gameObject.tag="crateInHole";
+                this.GetComponent<BoxCollider2D> ().enabled = false;
+            }
+            */
+
+            Instantiate(trail, transform.position, Quaternion.identity);
+            transform.position += v; 
+            yield return new WaitForSeconds(0.05f);   
+            
+            /*
+            if((this.gameObject.tag=="crateInHole"))
+            {
+                transform.position += new Vector3(0,0,1);
+            } 
+            */
+            
+        }            
     }
 
     

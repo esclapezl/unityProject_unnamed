@@ -18,10 +18,16 @@ public class batteryScript : MonoBehaviour
                 hitbox = Child.GetComponent<hitboxScript>();
             }
         }
-
-        
-        
         level = transform.parent.gameObject.GetComponent<levelScript>();
+        setSprite();
+        
+        
+        
+    }
+
+    void setSprite()
+    {
+        
         if(actionGiven > (float)level.nbCoups * 0.6f)
         {
             batteryDisplayed = 2;
@@ -63,5 +69,6 @@ public class batteryScript : MonoBehaviour
     private void reset()
     {
         gameObject.SetActive(true);
+        setSprite();
     }
 }

@@ -99,7 +99,8 @@ public class playerScript : MonoBehaviour
         return ((!h.isColliding
             || tagsPassableObstacle.Contains(h.objectTrigger.tag))
             && animationEnded
-            && levelSelection.currentLevel.nbCoupsLeft != 0);
+            && levelSelection.currentLevel.nbCoupsLeft != 0
+            && gameManager.actionFinished );
     }
 
     private bool slideCondition(hitboxScript h)

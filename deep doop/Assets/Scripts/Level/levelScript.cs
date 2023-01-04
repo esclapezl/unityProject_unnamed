@@ -7,6 +7,7 @@ public class levelScript : MonoBehaviour
 {
     [HideInInspector]
     public int level;
+    public string levelName;
 
     [Space(5)]
     [Header("NbCoups (-1 si le joeur a coups illimité)")]
@@ -41,12 +42,36 @@ public class levelScript : MonoBehaviour
     public levelSelectionScript levelSelection;
     public uiScript ui;
 
+    public int levelHeight;
+    public int levelWidth;
 
+    public IEnumerator levelOn()
+    {
+        yield return new WaitForSeconds(0.1f);
+        foreach(Transform child in transform)
+        {
+            child.gameObject.SetActive(true);
+        }
+    }
+
+    public IEnumerator levelOff()
+    {
+        yield return new WaitForSeconds(0.1f);
+        foreach(Transform child in transform)
+        {
+            if(child.GetComponent<polarityWholeBlockScript>() == null
+            && child.GetComponent<batteryScript>() == null)
+            {
+                child.gameObject.SetActive(false);
+            }
+            
+        }
+    }
     
     
     
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         level = 0;
         while(gameObject.name != "Level_"+level.ToString()
@@ -54,44 +79,54 @@ public class levelScript : MonoBehaviour
         {
             level++;
         }
-        startLevel();
+
+        if(levelSelection.currentLevel != this)
+        {
+            StartCoroutine(levelOff());
+        }
+        
+        
     }
 
     // Update is called once per frame
     public void startLevel()
     {
-        //active les fleches de tuto si lvl 1
-        if(levelSelection.currentLevel != null
-        && levelSelection.currentLevel.level == 1)
+        if(levelSelection.currentLevel == this)
         {
-            foreach(Transform child in levelSelection.player.transform)
+            StartCoroutine(levelOn());
+            //active les fleches de tuto si lvl 1
+            if(levelSelection.currentLevel != null
+            && levelSelection.currentLevel.level == 1)
             {
-                if(child.name == "tutorialArrows")
+                foreach(Transform child in levelSelection.player.transform)
                 {
-                    child.GetComponent<tutorialArrowsScript>().hasMoved = false;
-                    child.GetComponent<tutorialArrowsScript>().startTutorial();
+                    if(child.name == "tutorialArrows")
+                    {
+                        child.GetComponent<tutorialArrowsScript>().hasMoved = false;
+                        child.GetComponent<tutorialArrowsScript>().startTutorial();
+                    }
                 }
             }
-        }
-        
-        if(levelSelection.currentLevel != null
-        && levelSelection.currentLevel.level == level)
-        {
-            PlayerPrefs.SetInt("menuStartPos",level);
+            
+            if(levelSelection.currentLevel != null
+            && levelSelection.currentLevel.level == level)
+            {
+                PlayerPrefs.SetInt("menuStartPos",level);
 
-            /*
-            nbRotateLeft = nbRotate;
-            ui.setRotate(containsRotates,nbRotate);
-            nbSwitchLeft = nbSwitch;
-            ui.setSwitch(containsSwitchs,nbSwitch);
-            */
-            nbCoupsLeft = nbCoups;
-            ui.setCoups(nbCoups);
-            ui.setPolarity(containsPolarity,isOn,polarity);
+                /*
+                nbRotateLeft = nbRotate;
+                ui.setRotate(containsRotates,nbRotate);
+                nbSwitchLeft = nbSwitch;
+                ui.setSwitch(containsSwitchs,nbSwitch);
+                */
+                nbCoupsLeft = nbCoups;
+                ui.setCoups(nbCoups);
+                ui.setPolarity(containsPolarity,isOn,polarity);
 
-            polarity = 1;
-            isOn = false;
-            ui.setPolarity(containsPolarity,false,1);
+                polarity = 1;
+                isOn = false;
+                ui.setPolarity(containsPolarity,false,1);
+            }
         }
     }
 

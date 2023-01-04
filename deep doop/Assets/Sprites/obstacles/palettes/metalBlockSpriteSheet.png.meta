@@ -77,6 +77,9 @@ TextureImporter:
   - first:
       213: 4544219039353857600
     second: metalBlockSpriteSheet_24
+  - first:
+      213: 5035071794714868031
+    second: metalBlockSpriteSheet_25
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -686,6 +689,27 @@ TextureImporter:
       bones: []
       spriteID: 046e046d32f401f30800000000000000
       internalID: 4544219039353857600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: metalBlockSpriteSheet_25
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f39719ece1b20e540800000000000000
+      internalID: 5035071794714868031
       vertices: []
       indices: 
       edges: []

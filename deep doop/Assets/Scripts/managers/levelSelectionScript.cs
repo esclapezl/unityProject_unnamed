@@ -59,6 +59,7 @@ public class levelSelectionScript : MonoBehaviour
         }
         
         levelAt = PlayerPrefs.GetInt("levelAt",2);
+        
         ChangeToLevel(currentLevel.level);
         
     }
@@ -71,11 +72,12 @@ public class levelSelectionScript : MonoBehaviour
     private IEnumerator changeLevel(int lvlNumber)
     {
         lastLevelEntered = currentLevel.level;
+        StartCoroutine(currentLevel.levelOff());
+        
+
         currentLevel = levelList[lvlNumber];
-
-        yield return new WaitForSeconds(0.2f);
-
         cam.transform.position = new Vector3(currentLevel.cameraPos.transform.position.x,currentLevel.cameraPos.transform.position.y,-100);
+        yield return new WaitForSeconds(0.05f);
         player.transform.position =  new Vector3(currentLevel.startingPos.transform.position.x,currentLevel.startingPos.transform.position.y,0);
 
         //player.madeActions = Vector3[nbCoups-1];

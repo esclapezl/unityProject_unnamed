@@ -27,7 +27,7 @@ public class eventManager : MonoBehaviour
         if(Input.GetButtonDown("switch"))
         {
             if(levelSelection.currentLevel.containsSwitchs
-            && levelSelection.currentLevel.nbCoupsLeft > 0
+            && levelSelection.currentLevel.nbCoupsLeft != 0
             && SwitchBlocks != null)
             {
                 SwitchBlocks();
@@ -43,7 +43,7 @@ public class eventManager : MonoBehaviour
         if(Input.GetButtonDown("rotate"))
         {
             if(levelSelection.currentLevel.containsRotates
-            && levelSelection.currentLevel.nbCoupsLeft > 0
+            && levelSelection.currentLevel.nbCoupsLeft != 0
             && OnRotate != null)
             {
                 OnRotate();
@@ -58,7 +58,7 @@ public class eventManager : MonoBehaviour
         if(Input.GetButtonDown("changePolarity"))
         {
             if(levelSelection.currentLevel.containsPolarity
-            && levelSelection.currentLevel.nbCoupsLeft > 0
+            && levelSelection.currentLevel.nbCoupsLeft != 0
             && OnPolarity != null
             && gameManager.actionFinished)
             {

@@ -21,6 +21,7 @@ public class hitboxScript : MonoBehaviour
     
     void OnTriggerEnter2D (Collider2D hitInfo)
 	{
+        
         if(!(hitInfo.gameObject.tag == "Untagged"))
         {
             allCollsions.Add(hitInfo.gameObject);
@@ -36,8 +37,8 @@ public class hitboxScript : MonoBehaviour
 
     void OnTriggerExit2D (Collider2D hitInfo)
 	{
-        if(!(hitInfo.gameObject.tag == "Untagged")
-        && (hitInfo.gameObject.tag == objectTrigger.tag))
+        
+        if(!(hitInfo.gameObject.tag == "Untagged"))
         {
             allCollsions.Remove(hitInfo.gameObject);
             if(allCollsions.Count == 0)
@@ -66,6 +67,7 @@ public class hitboxScript : MonoBehaviour
         List<string> priorityList = new List<string>();
         priorityList.Add("player");
         priorityList.Add("crate");
+        priorityList.Add("wall");
         priorityList.Add("ice");
 
         int i =0;

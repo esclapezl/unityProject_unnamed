@@ -30,8 +30,12 @@ public class polarityBlock : MonoBehaviour
     // Start is called before the first frame update
     IEnumerator setSprite()
     {   
+        
         gameObject.name = gameObject.transform.parent.gameObject.name;
-        yield return new WaitForSeconds(1f);
+        
+        
+        
+        yield return null;
         //etablit les blocks du meme blocks a proximité
 
         //  _|_|_
@@ -191,4 +195,8 @@ public class polarityBlock : MonoBehaviour
     {
         StartCoroutine(setSprite());
     }
+
+   
+
+
 }

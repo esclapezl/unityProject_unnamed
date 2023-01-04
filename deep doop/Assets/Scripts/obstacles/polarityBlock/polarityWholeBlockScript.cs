@@ -12,7 +12,8 @@ public class polarityWholeBlockScript : MonoBehaviour
 
     public bool isSetUp = false;
     public bool isOn;
-    public int polarity = 1;
+    private int polarity;
+    public bool reveserdPolarity;
     public string axis;
 
     public ArrayList tagsPassableObstacle = new ArrayList();
@@ -25,6 +26,7 @@ public class polarityWholeBlockScript : MonoBehaviour
     public List<polarityHitboxScript> rightHitboxes;
 
     List<bool> pushableObjectsInCollisison; //permet de savoir si au moins un objet n'est pas poussable pour eviter de tester pour rien
+    List<GameObject> objectsInCollisison;
 
     public static int usedByNBlocks = 0;
 
@@ -32,8 +34,18 @@ public class polarityWholeBlockScript : MonoBehaviour
 
     void Start()
     {
+
+        if(reveserdPolarity)
+        {
+            polarity = -1;
+        }
+        else
+        {
+            polarity = 1;
+        }
         startingPos = transform.position;
         pushableObjectsInCollisison = new List<bool>(); 
+        objectsInCollisison = new List<GameObject>(); 
 
         upHitboxes = new List<polarityHitboxScript>();
         downHitboxes = new List<polarityHitboxScript>();
@@ -48,8 +60,9 @@ public class polarityWholeBlockScript : MonoBehaviour
     }
 
     void Update()
-    {
-        if(pushableObjectsInCollisison.Count > 0
+    { 
+        if(pushableObjectsInCollisison != null
+        && pushableObjectsInCollisison.Count > 0
         && !pushableObjectsInCollisison.Contains(false)) //tous les objets en collisions sont poussables
         {
             if(!isCollidingDirection(v))
@@ -65,24 +78,28 @@ public class polarityWholeBlockScript : MonoBehaviour
 
     IEnumerator setUp()
     {
-        yield return new WaitForSeconds(1f);
+        yield return null;
         isSetUp=true;
         
         foreach (Transform Child in transform) 
         {
-            if (Child.GetComponent<polarityBlock>().upHitbox != null) 
+            if (Child.GetComponent<polarityBlock>() != null
+                && Child.GetComponent<polarityBlock>().upHitbox != null) 
             {
                 upHitboxes.Add(Child.GetComponent<polarityBlock>().upHitbox);
             }
-            if (Child.GetComponent<polarityBlock>().downHitbox != null) 
+            if (Child.GetComponent<polarityBlock>() != null
+                && Child.GetComponent<polarityBlock>().downHitbox != null) 
             {
                 downHitboxes.Add(Child.GetComponent<polarityBlock>().downHitbox);
             }
-            if (Child.GetComponent<polarityBlock>().leftHitbox != null) 
+            if (Child.GetComponent<polarityBlock>() != null
+                && Child.GetComponent<polarityBlock>().leftHitbox != null) 
             {
                 leftHitboxes.Add(Child.GetComponent<polarityBlock>().leftHitbox);
             }
-            if (Child.GetComponent<polarityBlock>().rightHitbox != null) 
+            if (Child.GetComponent<polarityBlock>() != null
+                && Child.GetComponent<polarityBlock>().rightHitbox != null) 
             {
                 rightHitboxes.Add(Child.GetComponent<polarityBlock>().rightHitbox);
             }
@@ -109,34 +126,56 @@ public class polarityWholeBlockScript : MonoBehaviour
             hitboxes = downHitboxes;
         }
 
+        bool stop = false;
         foreach(polarityHitboxScript h in hitboxes)
         {
+            
             if(h.isColliding)
             {
                 //objet poussable
-                if(h.objectTrigger != null && h.objectTrigger.GetComponent<pushable>() != null)
+                if(h.objectTrigger != null 
+                && h.objectTrigger.GetComponent<pushable>() != null
+                && h.objectTrigger.GetComponent<pushable>().canBePushed(v)) //obj poussable immediat
                 {
-                    //essayer de le pousser
-                    if((h.objectTrigger != null 
-                    && h.objectTrigger.GetComponent<pushable>() != null 
-                    && h.objectTrigger.GetComponent<pushable>().canBePushed(v)))
-                    {
-                        h.objectTrigger.GetComponent<pushable>().push(v);
-                        return false; //l'objet a été poussé par la struct, la struct peut continuer son chemin
-                    }
-                    else
-                    {
-                        pushableObjectsInCollisison.Add(true); //l'objet est poussable mais pas par la struct
-                    }
+                    objectsInCollisison.Add(h.objectTrigger); //on garde l'obj car on va peut etre devoir le pousser si rien ne gene
+                    pushableObjectsInCollisison.Add(true); //obj pourra peut etre etre poussé plus tard
                 }
-                else
+                else if(h.objectTrigger != null 
+                && h.objectTrigger.GetComponent<pushable>() != null
+                && !h.objectTrigger.GetComponent<pushable>().canBePushed(v)) //obj poussable pas immediat
                 {
-                    pushableObjectsInCollisison.Add(false); //l'objet n'est pas poussable
+                    //si au moins un objet passe cette condition, la strcuture ne peut plus avancer
+                    stop = true;
+                    pushableObjectsInCollisison.Add(true); //obj pourra peut etre etre poussé plus tard
+                    // on ne garde pas l'obj car il be bougera pas tout de suite
                 }
-                return true; //l'objet n'as pas été poussé ou n'est pas poussable 
+                else //obj pas poussable
+                {
+                    objectsInCollisison.Clear();
+                    pushableObjectsInCollisison.Add(false); //au moins un objet immobile
+                    return true; //on sait qu'on ne pourra pas avancer plus loin
+                }
+                
             }
         }
-        return false;
+
+        if(stop) // un objet poussable est bloqué et empeche la pousse
+        {
+            objectsInCollisison.Clear();
+            return true;
+        }
+
+
+        pushableObjectsInCollisison.Clear(); //tous les obj sont poussables immediatement
+        //on peut donc clear cette list qui sert a retenir les objets poussables immobiles
+        foreach(GameObject g in objectsInCollisison)
+        {
+            g.GetComponent<pushable>().push(v);
+        }
+        objectsInCollisison.Clear();
+        
+        return false; //tous les objets ont été poussés
+        
     }
 
     
@@ -158,17 +197,25 @@ public class polarityWholeBlockScript : MonoBehaviour
                 isOn = true; 
                 foreach (Transform Child in transform) 
                 {
-                    Child.GetComponent<polarityBlock>().isOn = true;
-                    Child.GetComponent<polarityBlock>().animator.SetBool("isOn",true);
-                    Child.GetComponent<polarityBlock>().animator.SetInteger("polarity",polarity);
+                    if (Child.GetComponent<polarityBlock>() != null)
+                    {
+                        Child.GetComponent<polarityBlock>().isOn = true;
+                        Child.GetComponent<polarityBlock>().animator.SetBool("isOn",true);
+                        Child.GetComponent<polarityBlock>().animator.SetInteger("polarity",polarity);
+                    }
+                    
                 }
             }
             else{
                 polarity *= -1;
                 foreach (Transform Child in transform) 
                 {
-                    Child.GetComponent<polarityBlock>().polarity = polarity;
-                    Child.GetComponent<polarityBlock>().animator.SetInteger("polarity",polarity);
+                    if (Child.GetComponent<polarityBlock>() != null)
+                    {
+                        Child.GetComponent<polarityBlock>().polarity = polarity;
+                        Child.GetComponent<polarityBlock>().animator.SetInteger("polarity",polarity);
+                    }
+                    
                 }
             }
 
@@ -191,7 +238,7 @@ public class polarityWholeBlockScript : MonoBehaviour
         while(!isCollidingDirection(v))
         {
             transform.position = transform.position + v;  
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.04f);
         }      
         Camera.main.GetComponent<cameraShake>().shake();      
         
@@ -217,15 +264,29 @@ public class polarityWholeBlockScript : MonoBehaviour
 
     private void reset()
     {
+        if(transform.parent.GetComponent<levelScript>() != null
+        && transform.parent.GetComponent<levelScript>() ==  transform.parent.GetComponent<levelScript>().levelSelection.currentLevel)
         transform.position = startingPos;
         isOn = false;
-        polarity = 1;
+        if(reveserdPolarity)
+        {
+            polarity = -1;
+        }
+        else
+        {
+            polarity = 1;
+        }
+        
 
         foreach (Transform Child in transform) 
         {
-            Child.GetComponent<polarityBlock>().isOn = false;
-            Child.GetComponent<polarityBlock>().animator.SetBool("isOn",isOn);
-            Child.GetComponent<polarityBlock>().animator.SetInteger("polarity",polarity);
+            if (Child.GetComponent<polarityBlock>() != null)
+            {
+                Child.GetComponent<polarityBlock>().isOn = false;
+                Child.GetComponent<polarityBlock>().animator.SetBool("isOn",isOn);
+                Child.GetComponent<polarityBlock>().animator.SetInteger("polarity",polarity);
+            }
+            
         }
     }
 }
