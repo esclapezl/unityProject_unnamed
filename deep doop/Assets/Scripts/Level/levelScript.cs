@@ -60,9 +60,10 @@ public class levelScript : MonoBehaviour
         foreach(Transform child in transform)
         {
             if(child.GetComponent<polarityWholeBlockScript>() == null
-            && child.GetComponent<batteryScript>() == null)
+            && child.GetComponent<batteryScript>() == null
+            && child.GetComponent<pushable>() == null)
             {
-                child.gameObject.SetActive(false);
+                //child.gameObject.SetActive(false);
             }
             
         }

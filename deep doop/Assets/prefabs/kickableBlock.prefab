@@ -76,7 +76,7 @@ MonoBehaviour:
   objectTriggerComing: {fileID: 0}
   oldPosition: {x: 0, y: 0, z: 0}
   h1: {fileID: 0}
-  host: {fileID: 0}
+  host: {fileID: 7443714487846861096}
 --- !u!1 &7443714486695978864
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,7 +153,7 @@ MonoBehaviour:
   objectTriggerComing: {fileID: 0}
   oldPosition: {x: 0, y: 0, z: 0}
   h1: {fileID: 0}
-  host: {fileID: 0}
+  host: {fileID: 7443714487846861096}
 --- !u!1 &7443714486962460903
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,7 +232,7 @@ MonoBehaviour:
   objectTriggerComing: {fileID: 0}
   oldPosition: {x: 0, y: 0, z: 0}
   h1: {fileID: 0}
-  host: {fileID: 0}
+  host: {fileID: 7443714487846861096}
 --- !u!114 &7443714486962460899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,7 +325,7 @@ MonoBehaviour:
   objectTriggerComing: {fileID: 0}
   oldPosition: {x: 0, y: 0, z: 0}
   h1: {fileID: 0}
-  host: {fileID: 0}
+  host: {fileID: 7443714487846861096}
 --- !u!114 &7443714487163675700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -418,7 +418,7 @@ MonoBehaviour:
   objectTriggerComing: {fileID: 0}
   oldPosition: {x: 0, y: 0, z: 0}
   h1: {fileID: 0}
-  host: {fileID: 0}
+  host: {fileID: 7443714487846861096}
 --- !u!114 &7443714487168364194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -509,7 +509,7 @@ MonoBehaviour:
   objectTriggerComing: {fileID: 0}
   oldPosition: {x: 0, y: 0, z: 0}
   h1: {fileID: 0}
-  host: {fileID: 0}
+  host: {fileID: 7443714487846861096}
 --- !u!1 &7443714487664709308
 GameObject:
   m_ObjectHideFlags: 0
@@ -555,6 +555,7 @@ GameObject:
   - component: {fileID: 7443714487846861099}
   - component: {fileID: 7443714487846861109}
   - component: {fileID: 7443714487846861110}
+  - component: {fileID: 2793158423365621300}
   - component: {fileID: 7443714487846861111}
   - component: {fileID: 7443714487846861108}
   m_Layer: 0
@@ -647,6 +648,25 @@ MonoBehaviour:
   upHitbox: {fileID: 0}
   downHitbox: {fileID: 0}
   trail: {fileID: 6976132944449493123, guid: 2cb826fd9cdea6546a32689cff28ab9c, type: 3}
+--- !u!114 &2793158423365621300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7443714487846861096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1d6f15b58503df4aabc7cc209584449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rightHitbox: {fileID: 7443714486962460899}
+  leftHitbox: {fileID: 7443714488233624408}
+  upHitbox: {fileID: 7443714487163675700}
+  downHitbox: {fileID: 7443714487168364194}
+  mono: {fileID: 0}
+  slideScript: {fileID: 0}
+  startingPos: {x: 0, y: 0, z: 0}
 --- !u!50 &7443714487846861111
 Rigidbody2D:
   serializedVersion: 4
@@ -770,7 +790,7 @@ MonoBehaviour:
   objectTriggerComing: {fileID: 0}
   oldPosition: {x: 0, y: 0, z: 0}
   h1: {fileID: 0}
-  host: {fileID: 0}
+  host: {fileID: 7443714487846861096}
 --- !u!1 &7443714488233624412
 GameObject:
   m_ObjectHideFlags: 0
@@ -849,7 +869,7 @@ MonoBehaviour:
   objectTriggerComing: {fileID: 0}
   oldPosition: {x: 0, y: 0, z: 0}
   h1: {fileID: 0}
-  host: {fileID: 0}
+  host: {fileID: 7443714487846861096}
 --- !u!114 &7443714488233624408
 MonoBehaviour:
   m_ObjectHideFlags: 0

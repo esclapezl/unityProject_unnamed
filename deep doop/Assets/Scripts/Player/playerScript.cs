@@ -129,6 +129,7 @@ public class playerScript : MonoBehaviour
         eventManager.playerMove();
         
         animationEnded = false;
+        gameManager.actionFinished = false;
         dfr.setDiceFace(direction);
         //transform.position += v;
         //yield return new WaitForSeconds(0.05f); 
@@ -140,6 +141,7 @@ public class playerScript : MonoBehaviour
             yield return new WaitForSeconds(0.025f);   
         }
         animationEnded = true;  
+        gameManager.actionFinished = true;
 
         /* ANCIEN MOUVEMENT 1 MVMT = 1 UNITE
         eventManager.playerMove();

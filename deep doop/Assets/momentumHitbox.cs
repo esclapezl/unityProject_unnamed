@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class breakableBlockHitboxScript : MonoBehaviour
+public class momentumHitbox : MonoBehaviour
 {
     public int distanceFromObject;
     public bool isColliding;
     public GameObject objectTrigger;
     public GameObject objectTriggerComing;
     public Vector3 oldPosition;
-    public breakableBlockHitboxScript h1;
-    public breakableBlockScript host;
+    public momentumHitbox h1;
+    public GameObject host;
+    private string type;
 
     void Awake()
     {
@@ -20,12 +21,25 @@ public class breakableBlockHitboxScript : MonoBehaviour
         || gameObject.name == "rh1")
         {
             distanceFromObject = 1;
-            host = transform.parent.transform.parent.transform.parent.GetComponent<breakableBlockScript>();
+
         }
         else
         {
             distanceFromObject = 2;
-            h1 = transform.parent.GetComponent<breakableBlockHitboxScript>();
+            h1 = transform.parent.GetComponent<momentumHitbox>();
+        }
+
+        if(host.GetComponent<pushable>() != null) //objet poussable
+        {
+            type = "pushable";
+        }
+        else if(host.GetComponent<breakableBlockScript>() != null)
+        {
+            type = "breakableBlock";
+        }
+        else if(host.GetComponent<buttonScript>() != null)
+        {
+            type = "button";
         }
     }
 
@@ -47,14 +61,16 @@ public class breakableBlockHitboxScript : MonoBehaviour
                 && objectTriggerComing == objectTrigger
                 && objectTrigger.transform.position != oldPosition) //l'objet va taper 
                 {
-                    StartCoroutine(host.breakObject());
+                    hitAction();   
                 }
                 
                 objectTriggerComing = null;
-                oldPosition = new Vector3(0,0,0);
+                
+                
             }
         }
     }
+
 
     void OnTriggerExit2D (Collider2D hitInfo)
 	{
@@ -66,6 +82,11 @@ public class breakableBlockHitboxScript : MonoBehaviour
             {
                 StartCoroutine(h1.forget());
             }
+            else //distance == 1
+            {
+                objectTriggerComing = null;
+            }
+            
         }
     }
 
@@ -75,5 +96,40 @@ public class breakableBlockHitboxScript : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         objectTriggerComing = null;
     }
-}
 
+    void hitAction()
+    {
+        if(type == "pushable") //objet poussable
+        {
+            Vector3 v;
+            if(gameObject.name == "uh1")
+            {
+                v = new Vector3(0,-1,0);
+            }
+            else if(gameObject.name == "rh1")
+            {
+                v = new Vector3(-1,0,0);
+            }
+            else if(gameObject.name == "lh1")
+            {
+                v = new Vector3(1,0,0);
+            }
+            else //dh1
+            {
+                v = new Vector3(0,1,0);
+            }
+
+            StartCoroutine(host.GetComponent<pushable>().kick(v));
+            oldPosition = new Vector3(0,0,0);
+        }
+        else if(type == "breakableBlock") // objet cassable
+        {
+            host.GetComponent<breakableBlockScript>().breakObject();
+        }
+        else if(type == "button") //boutton
+        {
+            host.GetComponent<buttonScript>().toggleButton();
+        }
+    }
+
+}

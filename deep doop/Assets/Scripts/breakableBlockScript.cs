@@ -4,11 +4,20 @@ using UnityEngine;
 
 public class breakableBlockScript : MonoBehaviour
 {
+    SpriteRenderer sp;
+    BoxCollider2D bc;
+    void Awake()
+    {
+        sp =  transform.GetChild(0).GetComponent<SpriteRenderer>();
+        bc = transform.GetChild(0).GetComponent<BoxCollider2D>();
+    }
+
     public IEnumerator breakObject()
     {
         yield return new WaitForSeconds(0.05f);
         //anim
-        transform.GetChild(0).gameObject.SetActive(false);
+        sp.color = new Color(0f,0f,0f,0f);
+        bc.enabled = false;
         
     }
 
@@ -24,6 +33,7 @@ public class breakableBlockScript : MonoBehaviour
 
     private void reset()
     {
-        transform.GetChild(0).gameObject.SetActive(true);
+        sp.color = new Color(1f,1f,1f,1f);
+        bc.enabled = true;
     }
 }

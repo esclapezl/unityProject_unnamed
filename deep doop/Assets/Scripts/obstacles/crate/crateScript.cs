@@ -26,6 +26,7 @@ public class crateScript : MonoBehaviour
         this.tagsPassableObstacle = gameManager.passableObjects();
     }
 
+    /*
     // Update is called once per frame
     void Update()
     {
@@ -89,6 +90,7 @@ public class crateScript : MonoBehaviour
             }
         }
     }
+    
 
     private bool movementCondition(hitboxScript h, hitboxScript oppositeH)
     {
@@ -122,6 +124,7 @@ public class crateScript : MonoBehaviour
             transform.position += new Vector3(0,0,1);
         } 
     }
+    */
 
     void OnEnable()
     {

@@ -62,7 +62,7 @@ public class eventManager : MonoBehaviour
             && OnPolarity != null
             && gameManager.actionFinished)
             {
-                OnPolarity();
+                changePolarity();
                 playerMove();
             }
         }
@@ -144,5 +144,10 @@ public class eventManager : MonoBehaviour
     {
         levelSelection.currentLevel.nbCoupsLeft--;
         ui.setCoups(levelSelection.currentLevel.nbCoupsLeft);
+    }
+
+    public void changePolarity()
+    {
+        OnPolarity();
     }
 }

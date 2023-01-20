@@ -144,30 +144,19 @@ public class pushable : MonoBehaviour
     public GameObject trail;
     public IEnumerator kick(Vector3 v)
     {
+        gameManager.actionFinished = false;
+        hitboxScript h = concernedHitbox(v);
         yield return new WaitForSeconds(0.05f); //le temps que le block qui la tapé s'arrete
-        while(canBePushed(v))
+        while(!h.isColliding)
         {
-            /*
-            if(h.objectTrigger != null && h.objectTrigger.tag=="hole"){
-                h.objectTrigger.tag="crateInHole";
-                this.gameObject.tag="crateInHole";
-                this.GetComponent<BoxCollider2D> ().enabled = false;
-            }
-            */
-
             Instantiate(trail, transform.position, Quaternion.identity);
             transform.position += v; 
             yield return new WaitForSeconds(0.05f);   
-            
-            /*
-            if((this.gameObject.tag=="crateInHole"))
-            {
-                transform.position += new Vector3(0,0,1);
-            } 
-            */
-            
-        }            
+        }     
+        gameManager.actionFinished = true;       
     }
+
+    
 
     
 }

@@ -69,7 +69,7 @@ public class polarityWholeBlockScript : MonoBehaviour
             {
                 gameManager.actionFinished = false;
                 usedByNBlocks++;
-                StartCoroutine(slideCoroutine(v));
+                StartCoroutine(updateSlideCoroutine(v));
                 pushableObjectsInCollisison.Clear();
             }
 
@@ -250,6 +250,12 @@ public class polarityWholeBlockScript : MonoBehaviour
         }
     }
 
+    public IEnumerator updateSlideCoroutine(Vector3 v)
+    {
+        yield return new WaitForSeconds(0.06f);
+        StartCoroutine(slideCoroutine(v));
+    }
+
     void OnEnable()
     {
         eventManager.OnPolarity += changePolarity;
@@ -264,6 +270,9 @@ public class polarityWholeBlockScript : MonoBehaviour
 
     private void reset()
     {
+        
+               
+        pushableObjectsInCollisison.Clear();
         if(transform.parent.GetComponent<levelScript>() != null
         && transform.parent.GetComponent<levelScript>() ==  transform.parent.GetComponent<levelScript>().levelSelection.currentLevel)
         transform.position = startingPos;
