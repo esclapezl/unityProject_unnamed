@@ -76,6 +76,7 @@ public class momentumHitbox : MonoBehaviour
 	{
         if(!(hitInfo.gameObject.tag == "Untagged"))
         {
+            
             objectTrigger = null;
             isColliding = false;
             if(distanceFromObject == 2)
@@ -84,7 +85,11 @@ public class momentumHitbox : MonoBehaviour
             }
             else //distance == 1
             {
-                objectTriggerComing = null;
+                if(hitInfo.gameObject == objectTriggerComing)
+                {
+                    objectTriggerComing = null;
+                }
+                
             }
             
         }

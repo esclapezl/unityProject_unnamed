@@ -12,6 +12,7 @@ public class buttonScript : MonoBehaviour
     void Start()
     {
         level = transform.parent.GetComponent<levelScript>();
+        
     }
 
     // Update is called once per frame
@@ -39,8 +40,12 @@ public class buttonScript : MonoBehaviour
 
     void changePolarity()
     {
-        polarity *= -1;
-        animator.SetInteger("polarity",polarity);
+        if(eM.levelSelection.currentLevel == level)
+        {
+            polarity *= -1;
+            animator.SetInteger("polarity",polarity);
+        }
+        
     }
 
     void reset()
